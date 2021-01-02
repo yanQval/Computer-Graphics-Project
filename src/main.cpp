@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
                 finalColor += PathTracing(camRay, 0, sceneParser, &mt_rand) * (1. / SPP);
             }
             Vector3f resultColor(toInt(finalColor.x()), toInt(finalColor.y()), toInt(finalColor.z()));
-            image.SetPixel(x, y, finalColor);
+            image.SetPixel(x, y, resultColor);
         }
     }
     image.SaveBMP(outputFile.c_str());

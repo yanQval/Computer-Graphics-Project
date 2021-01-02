@@ -22,7 +22,7 @@ void WriteByte( FILE* file, unsigned char b )
 
 unsigned char ClampColorComponent( float c )
 {
-    int tmp = int( c * 255 );
+    int tmp = int( c );
     
     if( tmp < 0 )
     {

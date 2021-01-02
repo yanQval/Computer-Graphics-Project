@@ -134,27 +134,8 @@ int main(int argc, char *argv[])
                 float py = y + frand(&mt_rand);
                 Ray camRay = camera->generateRay(Vector2f(px, py));
                 finalColor += PathTracing(camRay, 0, sceneParser, &mt_rand) * (1. / SPP);
-                /*Group *basegroup = sceneParser.getGroup();
-                Hit hit;
-                bool isIntersect = basegroup->intersect(camRay, hit, 0);
-                //printf("%d %d %.4lf\n", x, y, hit.getT());
-                if (isIntersect)
-                {
-                    Vector3f color = Vector3f::ZERO;
-                    for (int li = 0; li < sceneParser.getNumLights(); li++)
-                    {
-                        Light *light = sceneParser.getLight(li);
-                        Vector3f L, lightColor;
-                        light->getIllumination(camRay.pointAtParameter(hit.getT()), L, lightColor);
-                        color += hit.getMaterial()->Shade(camRay, hit, L, lightColor);
-                    }
-                    finalColor += color / SSP;
-                }
-                else
-                {
-                    finalColor += sceneParser.getBackgroundColor() / SSP;
-                }*/
             }
+            Vector3f resultColor(toInt(finalColor.x()), toInt(finalColor.y()), toInt(finalColor.z()));
             image.SetPixel(x, y, finalColor);
         }
     }

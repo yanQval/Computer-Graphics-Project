@@ -16,4 +16,4 @@ cd ..
 # Run all testcases. 
 # You can comment some lines to disable the run of specific examples.
 mkdir -p output
-bin/PA1 testcases/cornell_2.txt output/cornell.bmp 20
+bin/PA1 testcases/cornell_2.txt output/cornell.bmp 1000

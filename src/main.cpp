@@ -25,6 +25,11 @@ float frand(mt19937 *mt_rand)
     return (float)mt_rand->operator()() / mt_rand->max();
 }
 
+float clamp(float x)
+{
+    return x < 0 ? 0 : x > 1 ? 1 : x;
+}
+
 int toInt(float x)
 {
     return int(pow(clamp(x), 1 / 2.2) * 255 + .5); 
@@ -120,7 +125,7 @@ int main(int argc, char *argv[])
     Camera *camera = sceneParser.getCamera();
     printf("%d %d\n", camera->getWidth(), camera->getHeight());
     Image image(camera->getWidth(), camera->getHeight());
-#pragma omp parallel for schedule(dynamic, 1)
+#pragma omp parallel for schedule(dynamic, 1) num_threads(10)
     for (int x = 0; x < camera->getWidth(); x++)
     {
         fprintf(stderr, "\rRendering (%d spp) %5.2f%%", SPP, 100. * x / (camera->getWidth() - 1));

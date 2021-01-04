@@ -224,9 +224,9 @@ Image SPPM::run()
     {
         if (round == 1)
         {
-            Rmax = 3;
+            Rmax = 5;
             for (int i = 0; i < n_hitPoints; i++)
-                hitPoints[i].radius = 3;
+                hitPoints[i].radius = 5;
         }
 
         vector<HitPoint> photonPairs[num_photons];

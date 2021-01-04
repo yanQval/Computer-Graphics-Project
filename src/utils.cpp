@@ -22,7 +22,13 @@ int toInt(float x)
 
 Vector3f uniformSample(mt19937 *rd)
 {
-    float theta, cosPhi, sinPhi;
+    while (true)
+    {
+        Vector3f d((frand(rd) - 0.5) * 2, (frand(rd) - 0.5) * 2, (frand(rd) - 0.5) * 2);
+        if (d.length() <= 1)
+            return d;
+    }
+    /*float theta, cosPhi, sinPhi;
     Vector3f v;
     do
     {
@@ -32,7 +38,7 @@ Vector3f uniformSample(mt19937 *rd)
         v = Vector3f(cos(theta) * sinPhi, sin(theta) * sinPhi, cosPhi);
     } while (0);
     //while (Vector3f::dot(n, v) <= 0);
-    return v;
+    return Vector3f(v.z(), v.x(), v.y());*/
 }
 
 float dis(Vector3f a, Vector3f b)

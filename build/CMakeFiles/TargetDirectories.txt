@@ -1,6 +1,6 @@
-/home/yql/Computer-Graphics-Project/build/CMakeFiles/rebuild_cache.dir
-/home/yql/Computer-Graphics-Project/build/CMakeFiles/PA1.dir
-/home/yql/Computer-Graphics-Project/build/CMakeFiles/edit_cache.dir
-/home/yql/Computer-Graphics-Project/build/deps/vecmath/CMakeFiles/rebuild_cache.dir
-/home/yql/Computer-Graphics-Project/build/deps/vecmath/CMakeFiles/vecmath.dir
-/home/yql/Computer-Graphics-Project/build/deps/vecmath/CMakeFiles/edit_cache.dir
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/rebuild_cache.dir
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/edit_cache.dir
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/PA1.dir
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/deps/vecmath/CMakeFiles/rebuild_cache.dir
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/deps/vecmath/CMakeFiles/edit_cache.dir
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/deps/vecmath/CMakeFiles/vecmath.dir

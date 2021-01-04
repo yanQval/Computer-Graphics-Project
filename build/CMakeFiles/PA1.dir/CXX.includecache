@@ -46,19 +46,37 @@ Vector3f.h
 Vector4f.h
 ../deps/vecmath/include/Vector4f.h
 
-../include/image.hpp
-cassert
+../include/hitpoint.hpp
+vecmath.h
+-
+cmath
+-
+
+../include/kdtree.hpp
+Vector3f.h
+../include/Vector3f.h
+hitpoint.hpp
+../include/hitpoint.hpp
+vector
+-
+map
+-
+
+../include/utils.hpp
+random
 -
 vecmath.h
 -
 
-/home/yql/Computer-Graphics-Project/src/image.cpp
-cstdlib
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.cpp
+kdtree.hpp
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.hpp
+hitpoint.hpp
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/hitpoint.hpp
+utils.hpp
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/utils.hpp
+vector
 -
-cstdio
+map
 -
-cstring
--
-image.hpp
-/home/yql/Computer-Graphics-Project/src/image.hpp
 

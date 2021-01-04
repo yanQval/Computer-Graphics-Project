@@ -96,6 +96,10 @@ void SceneParser::parseFile()
         {
             parseBackground();
         }
+        else if (!strcmp(token, "Lights"))
+        {
+            parseLights();
+        }
         else if (!strcmp(token, "Materials"))
         {
             parseMaterials();
@@ -187,6 +191,7 @@ void SceneParser::parseLights()
     int count = 0;
     while (num_lights > count)
     {
+        //printf("%d %d\n", num_lights, count);
         getToken(token);
         if (strcmp(token, "DirectionalLight") == 0)
         {

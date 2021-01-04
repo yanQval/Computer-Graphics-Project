@@ -11,6 +11,8 @@
 #include "camera.hpp"
 #include "group.hpp"
 #include "light.hpp"
+#include "sppm.hpp"
+#include "utils.hpp"
 
 #include "constant.h"
 
@@ -19,21 +21,6 @@
 int SPP = 10;
 
 using namespace std;
-
-float frand(mt19937 *mt_rand)
-{
-    return (float)mt_rand->operator()() / mt_rand->max();
-}
-
-float clamp(float x)
-{
-    return x < 0 ? 0 : x > 1 ? 1 : x;
-}
-
-int toInt(float x)
-{
-    return int(pow(clamp(x), 1 / 2.2) * 255 + .5); 
-}
 
 Vector3f PathTracing(const Ray &r, int depth, const SceneParser &sceneParser, mt19937 *mt_rand)
 {
@@ -77,10 +64,6 @@ Vector3f PathTracing(const Ray &r, int depth, const SceneParser &sceneParser, mt
         float nnt = into ? nc / nt : nt / nc;
         float ddn = Vector3f::dot(r.getDirection(), n);
         float cos2t = 1 + nnt * nnt * (ddn * ddn - 1);
-        //puts("!!!!!");
-        //printf("%d\n", into);
-        //printf("%lf %lf\n", ddn, cos2t);
-        //printf("%lf %lf %lf %lf\n", a, b, R0, tc);
         Ray reflRay(x, r.getDirection() - n * 2 * Vector3f::dot(n, r.getDirection()));
         if (cos2t < 0)
         {
@@ -89,10 +72,6 @@ Vector3f PathTracing(const Ray &r, int depth, const SceneParser &sceneParser, mt
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
-        //puts("!!!!!");
-        //printf("%d\n", into);
-        //printf("%lf %lf\n", -ddn, Vector3f::dot(tdir, n));
-        //printf("%lf %lf %lf %lf\n", a, b, R0, tc);
         return hit.getMaterial()->getEmission() + c * (depth > 2 ? (frand(mt_rand) < P ? PathTracing(reflRay, depth, sceneParser, mt_rand) * RP : PathTracing(Ray(x, tdir), depth, sceneParser, mt_rand) * TP)
                                                                  : PathTracing(reflRay, depth, sceneParser, mt_rand) * Re + PathTracing(Ray(x, tdir), depth, sceneParser, mt_rand) * Tr);
     }
@@ -121,7 +100,10 @@ int main(int argc, char *argv[])
     // the scene.  Write the color at the intersection to that
     // pixel in your output image.
 
-    SceneParser sceneParser(inputFile.c_str());
+    SceneParser *sceneParser = new SceneParser(inputFile.c_str());
+    SPPM sppm(sceneParser);
+    Image image = sppm.run();
+    /*
     Camera *camera = sceneParser.getCamera();
     printf("%d %d\n", camera->getWidth(), camera->getHeight());
     Image image(camera->getWidth(), camera->getHeight());
@@ -143,7 +125,7 @@ int main(int argc, char *argv[])
             Vector3f resultColor(toInt(finalColor.x()), toInt(finalColor.y()), toInt(finalColor.z()));
             image.SetPixel(x, y, resultColor);
         }
-    }
+    }*/
     image.SaveBMP(outputFile.c_str());
     cout << endl
          << "Hello! Computer Graphics!" << endl;

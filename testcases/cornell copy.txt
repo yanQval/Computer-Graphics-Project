@@ -1,10 +1,10 @@
 PerspectiveCamera {
-    center 50 52 200
+    center 50 44 210
     direction 0 0 -1
     up 0 1 0
-    angle 50
-    width 256
-    height 256
+    angle 45
+    width 800
+    height 600
 }
 
 Background {
@@ -32,6 +32,7 @@ Materials {
         reflectRate 1.5
     }
     Material {
+        color 0 0 0
         emission 12 12 12
     }
 }
@@ -66,14 +67,14 @@ Group {
 
     MaterialIndex 3
     Sphere {
-        center 25 15 40
-        radius 15
+        center 27 16.5 47
+        radius 16.5
     }
 
     MaterialIndex 4
     Sphere {
-        center 70 15 60
-        radius 15
+        center 73 16.5 78
+        radius 16.5
     }
 
     MaterialIndex 5

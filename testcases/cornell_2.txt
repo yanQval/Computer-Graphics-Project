@@ -7,9 +7,14 @@ PerspectiveCamera {
     height 600
 }
 
-Background {
-    color 0 0 0 
+Lights {
+    numLights 1
+    PointLight {
+        dposition 50 81 81.6
+        color 5000 5000 5000
+    }
 }
+
 
 Materials {
     numMaterials 6
@@ -38,7 +43,7 @@ Materials {
 }
 
 Group {
-    numObjects 8
+    numObjects 7
     MaterialIndex 0
     Plane {
         normal 1 0 0
@@ -75,11 +80,5 @@ Group {
     Sphere {
         center 73 16.5 78
         radius 16.5
-    }
-
-    MaterialIndex 5
-    Sphere {
-        center 50 681.33 81.6
-        radius 600
     }
 }

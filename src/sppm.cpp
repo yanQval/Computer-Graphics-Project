@@ -187,7 +187,7 @@ Image SPPM::run()
 
     vector<HitPoint> tmphit[camera->getWidth()];
 
-    int n_threads = 10;
+    int n_threads = 25;
 
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
     for (int x = 0; x < camera->getWidth(); x++)
@@ -214,9 +214,9 @@ Image SPPM::run()
     }
 
     int t_round = 100;
-    int num_photons = 30000;
+    int num_photons = 300000;
     float alpha = .7;
-    float Rmax = 5;
+    float Rmax = 7;
 
     int n_hitPoints = hitPoints.size();
     printf("%d\n", n_hitPoints);

@@ -48,7 +48,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
     //float p = max(max(c.x(), c.y()), c.z());
     //printf("%d %.5f\n", depth, p);
-    if (++depth > 5)
+    if (++depth > 4)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -78,11 +78,12 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
         if (cos2t < 0)
         {
             rayTracing(Ray(x, r.getDirection() - n * 2 * Vector3f::dot(n, (r.getDirection()))), depth, sceneParser, hitPoints, _x, _y, c, mt_rand);
+            return;
         }
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
-        if (depth > 2)
+        if (depth > 4)
         {
             if (frand(mt_rand) < P)
                 rayTracing(reflRay, depth, sceneParser, hitPoints, _x, _y, c * RP, mt_rand);
@@ -112,7 +113,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     Vector3f n = hit.getNormal().normalized();
 
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
-    if (++depth > 5)
+    if (++depth > 4)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -154,12 +155,13 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         if (cos2t < 0)
         {
             photonTracing(Ray(x, r.getDirection() - n * 2 * Vector3f::dot(n, (r.getDirection()))), depth, sceneParser, hitPoints, c, kdt, Rmax, mt_rand);
+            return;
         }
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
         //printf("%.5f %.5f %.5f %.5f\n", RP, TP, Re, Tr);
-        if (depth > 2)
+        if (depth > 4)
         {
             if (frand(mt_rand) < P)
                 photonTracing(reflRay, depth, sceneParser, hitPoints, c * RP, kdt, Rmax, mt_rand);
@@ -194,8 +196,8 @@ Image SPPM::run()
         mt19937 mt_rand(x);
         for (int y = 0; y < camera->getHeight(); y++)
         {
-            float px = x + frand(&mt_rand);
-            float py = y + frand(&mt_rand);
+            float px = x + .5;
+            float py = y + .5;
             Ray camRay = camera->generateRay(Vector2f(px, py));
             rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1, 1, 1), &mt_rand);
         }
@@ -212,10 +214,10 @@ Image SPPM::run()
     }
 
     int t_round = 100;
-    int num_photons = 100000;
+    int num_photons = 30000;
     float alpha = .7;
+    float Rmax = 5;
 
-    float Rmax;
     int n_hitPoints = hitPoints.size();
     printf("%d\n", n_hitPoints);
     KDTree kdtree(&hitPoints);
@@ -224,9 +226,14 @@ Image SPPM::run()
     {
         if (round == 1)
         {
-            Rmax = 5;
             for (int i = 0; i < n_hitPoints; i++)
-                hitPoints[i].radius = 5;
+                hitPoints[i].radius = Rmax;
+        }
+        else
+        {
+            Rmax = 0;
+            for (int i = 0; i < n_hitPoints; i++)
+                Rmax = max(Rmax, hitPoints[i].radius);
         }
 
         vector<HitPoint> photonPairs[num_photons];
@@ -238,11 +245,12 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
             for (int photon = 0; photon < num_photons; photon++)
             {
-                mt19937 mt_rand(photon);
+                mt19937 mt_rand(round * num_photons + photon);
                 light->generatePhoton(phoRay, lightColor, &mt_rand);
                 photonTracing(phoRay, 0, sceneParser, &photonPairs[photon], lightColor, &kdtree, Rmax, &mt_rand);
             }
         }
+        int numpair = 0;
         if (round == 1)
         {
             for (int li = 0; li < sceneParser->getNumLights(); li++)
@@ -250,10 +258,11 @@ Image SPPM::run()
                     for (auto hitpair : photonPairs[photon])
                     {
                         int id = hitpair.x;
-                        if (dis(hitpair.pos, hitPoints[id].pos) < hitPoints[id].radius)
+                        if (dis(hitpair.pos, hitPoints[id].pos) < hitPoints[id].radius && Vector3f::dot(hitpair.norm, hitPoints[id].norm) > eps)
                         {
                             hitPoints[id].N += 1;
                             hitPoints[id].tau += hitpair.col;
+                            numpair++;
                         }
                     }
         }
@@ -264,36 +273,41 @@ Image SPPM::run()
                     for (auto hitpair : photonPairs[photon])
                     {
                         int id = hitpair.x;
-                        if (dis(hitpair.pos, hitPoints[id].pos) < hitPoints[id].radius)
+                        if (dis(hitpair.pos, hitPoints[id].pos) < hitPoints[id].radius && Vector3f::dot(hitpair.norm, hitPoints[id].norm) > eps)
                         {
                             hitPoints[id].M += 1;
                             hitPoints[id].tau += hitpair.col;
+                            numpair++;
                         }
                     }
             for (int i = 0; i < n_hitPoints; i++)
             {
                 int N = hitPoints[i].N;
                 int M = hitPoints[i].M;
-                hitPoints[i].radius *= sqrt((N + alpha * M) / (N + M));
-                hitPoints[i].tau *= (N + alpha * M) / (N + M);
-                hitPoints[i].N = int(N + alpha * M);
-                hitPoints[i].M = 0;
+                if (N + M != 0)
+                {
+                    hitPoints[i].radius *= sqrt((N + alpha * M) / (N + M));
+                    hitPoints[i].tau *= (N + alpha * M) / (N + M);
+                    hitPoints[i].N = N + alpha * M;
+                    hitPoints[i].M = 0;
+                }
             }
         }
+        printf("hit photon %d \n", numpair);
         image.SetAllPixels(Vector3f::ZERO);
         for (auto hitPoint : hitPoints)
         {
             int x = hitPoint.x, y = hitPoint.y;
             Vector3f color = image.GetPixel(x, y);
             color += hitPoint.col * hitPoint.tau / M_PI / hitPoint.radius / hitPoint.radius / (num_photons * round);
-            if (color.x() > 0.5)
+            /*if (color.x() > 0.5)
             {
-                printf("%d %d %d %.5f\n", x, y, hitPoint.N, hitPoint.radius);
+                printf("%d %d %.5f %.5f\n", x, y, hitPoint.N, hitPoint.radius);
                 hitPoint.tau.print();
                 hitPoint.pos.print();
                 hitPoint.col.print();
                 color.print();
-            }
+            }*/
             image.SetPixel(x, y, color);
         }
         for (int x = 0; x < camera->getWidth(); x++)

@@ -150,18 +150,6 @@ random
 vecmath.h
 -
 
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.cpp
-kdtree.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.hpp
-hitpoint.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/hitpoint.hpp
-utils.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/utils.hpp
-vector
--
-map
--
-
 /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/sppm.cpp
 sppm.hpp
 /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/sppm.hpp

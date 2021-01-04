@@ -26,7 +26,7 @@ public:
     int x, y;
     Vector3f col;
     float radius;
-    int N;
+    float N;
     int M;
     Vector3f tau;
 };

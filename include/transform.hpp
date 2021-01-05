@@ -30,9 +30,12 @@ public:
         Vector3f trSource = transformPoint(transform, r.getOrigin());
         Vector3f trDirection = transformDirection(transform, r.getDirection());
         Ray tr(trSource, trDirection);
+        //trSource.print();
+        //trDirection.print();
         bool inter = o->intersect(tr, h, tmin);
         if (inter) {
-            h.set(h.getT(), h.getMaterial(), transformDirection(transform.transposed(), h.getNormal()).normalized());
+            //printf("%.5f %d\n",h.getT(), h.getInto());
+            h.set(h.getT(), h.getMaterial(), transformDirection(transform.inverse(), h.getNormal()).normalized(), h.getInto());
         }
         return inter;
     }

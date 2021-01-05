@@ -27,10 +27,10 @@ void KDTree::query(Vector3f q_pos, float Rmax, vector<HitPoint *> *result)
     int x = int(q_pos.x());
     int y = int(q_pos.y());
     int z = int(q_pos.z());
-    for (int tx = x - 6; tx <= x + 5; tx++)
-        for (int ty = y - 6; ty <= y + 5; ty++)
-            for (int tz = z - 6; tz <= z + 5; tz++)
-                if (dis(Vector3f(tx, ty, tz), q_pos) < Rmax + 1.5)
+    for (int tx = x - 8; tx <= x + 8; tx++)
+        for (int ty = y - 8; ty <= y + 8; ty++)
+            for (int tz = z - 8; tz <= z + 8; tz++)
+                if (dis(Vector3f(tx, ty, tz), q_pos) < Rmax + 1.5 && mp.count(make_pair(make_pair(tx, ty), tz)) != 0)
                     for (auto x : mp[make_pair(make_pair(tx, ty), tz)])
                         result->push_back(x);
 }

@@ -2,6 +2,7 @@
 #define TRIANGLE_H
 
 #include "object3d.hpp"
+#include "constant.h"
 #include <vecmath.h>
 #include <cmath>
 #include <iostream>
@@ -34,8 +35,14 @@ public:
 		if (Vector3f::dot(normal, Vector3f::cross(vertices[1] - P, vertices[2] - P)) < 0) return false;
 		if (Vector3f::dot(normal, Vector3f::cross(vertices[2] - P, vertices[0] - P)) < 0) return false;
 		if (Vector3f::dot(normal, Vector3f::cross(vertices[0] - P, vertices[1] - P)) < 0) return false;
+		//puts("!!!");
+		//printf("%.5f %.5f\n", t, hit.getT());
+		//normal.print();
+		//R.print();
+		//printf("%.5f\n", Vector3f::dot(normal, R));
         if (t > hit.getT()) return false;
-		hit = Hit(t, material, normal);
+        bool into = (Vector3f::dot(normal,R) < 0);
+		hit = Hit(t, material, into ? normal : -normal, into);
         return true;
 	}
 	

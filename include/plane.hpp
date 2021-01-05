@@ -29,7 +29,8 @@ public:
         t = (d - Vector3f::dot(normal, O)) / Vector3f::dot(normal, R);
         if (t < tmin) return false;
         if (t > h.getT()) return false;
-        h = Hit(t, material, normal);
+        bool into = (Vector3f::dot(normal,R) < 0);
+        h = Hit(t, material, into ? normal : -normal, into);
         //printf("%.4lf\n", t);
         return true;
     }

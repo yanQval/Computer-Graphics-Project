@@ -1,0 +1,76 @@
+PerspectiveCamera {
+    center 50 44 210
+    direction 0 0 -1
+    up 0 1 0
+    angle 45
+    width 400
+    height 300
+}
+
+Lights {
+    numLights 1
+    PointLight {
+        position 90 25 71.6
+        color 8000 8000 8000
+    }
+}
+
+Materials {
+    numMaterials 5
+    Material {
+        color 0.75 0.25 0.25
+    }
+    Material {
+        color 0.25 0.25 0.75
+    }
+    Material {
+        color 0.75 0.75 0.75
+    }
+    Material { 
+        color 0.999 0.999 0.999 
+        type SPEC
+    }
+    Material { 
+        color 0.999 0.999 0.999 
+        type REFL
+        reflectRate 1.5
+    }
+}
+
+Group {
+    numObjects 6
+    MaterialIndex 0
+    Plane {
+        normal 1 0 0
+        offset 0
+    }
+    
+    MaterialIndex 1
+    Plane {
+        normal -1 0 0
+        offset -99
+    }
+
+    MaterialIndex 2
+    Plane {
+        normal 0 0 1
+        offset 0
+    }
+    Plane {
+        normal 0 1 0
+        offset 0
+    }
+    Plane {
+        normal 0 -1 0
+        offset -81.6
+    }
+
+    MaterialIndex 4
+    Transform {
+		Scale  15 15 15 
+		Translate  105 23 80
+        TriangleMesh {
+            obj_file mesh/glass.obj
+        }
+    }
+}

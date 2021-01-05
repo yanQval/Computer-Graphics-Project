@@ -48,7 +48,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
     //float p = max(max(c.x(), c.y()), c.z());
     //printf("%d %.5f\n", depth, p);
-    if (++depth > 4)
+    if (++depth > 20)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -83,7 +83,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
-        if (depth > 4)
+        if (depth > 20)
         {
             if (frand(mt_rand) < P)
                 rayTracing(reflRay, depth, sceneParser, hitPoints, _x, _y, c * RP, mt_rand);
@@ -113,7 +113,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     Vector3f n = hit.getNormal().normalized();
 
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
-    if (++depth > 4)
+    if (++depth > 6)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -123,7 +123,9 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     if (hit.getMaterial()->getType() == DIFUSE)
     {
         tmp->clear();
+        //printf("%d\n",tmp->size());
         kdt->query(x, Rmax, tmp);
+        //printf("%d\n",tmp->size());
         for (HitPoint *pointer : *tmp)
         {
             if (dis(x, pointer->pos) < pointer->radius && Vector3f::dot(n, pointer->norm) > eps)
@@ -171,7 +173,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
         //printf("%.5f %.5f %.5f %.5f\n", RP, TP, Re, Tr);
-        if (depth > 4)
+        if (depth > 6)
         {
             if (frand(mt_rand) < P)
                 photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt, Rmax, mt_rand);
@@ -197,7 +199,7 @@ Image SPPM::run()
 
     vector<HitPoint> tmphit[camera->getWidth()];
 
-    int n_threads = 25;
+    int n_threads = 30;
 
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
     for (int x = 0; x < camera->getWidth(); x++)
@@ -224,9 +226,9 @@ Image SPPM::run()
     }
 
     int t_round = 100;
-    int num_photons = 30000;
+    int num_photons = 100000;
     float alpha = .7;
-    float Rmax = 7;
+    float Rmax = 3;
 
     int n_hitPoints = hitPoints.size();
     printf("%d\n", n_hitPoints);
@@ -252,6 +254,7 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
             for (int photon = 0; photon < num_photons; photon++)
             {
+                fprintf(stderr, "\rRendering  %5.2f%%",  100. * photon / (num_photons - 1));
                 Vector3f lightColor;
                 vector<HitPoint *> tmp;
                 Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
@@ -283,64 +286,12 @@ Image SPPM::run()
                 }
             }
         }
-        /*int numpair = 0;
-        if (round == 1)
-        {
-            for (int li = 0; li < sceneParser->getNumLights(); li++)
-                for (int photon = 0; photon < num_photons; photon++)
-                    for (auto hitpair : photonPairs[photon])
-                    {
-                        int id = hitpair.x;
-                        if (dis(hitpair.pos, hitPoints[id].pos) < hitPoints[id].radius && Vector3f::dot(hitpair.norm, hitPoints[id].norm) > eps)
-                        {
-                            hitPoints[id].N += 1;
-                            hitPoints[id].tau += hitpair.col;
-                            numpair++;
-                        }
-                    }
-        }
-        else
-        {
-            for (int li = 0; li < sceneParser->getNumLights(); li++)
-                for (int photon = 0; photon < num_photons; photon++)
-                    for (auto hitpair : photonPairs[photon])
-                    {
-                        int id = hitpair.x;
-                        if (dis(hitpair.pos, hitPoints[id].pos) < hitPoints[id].radius && Vector3f::dot(hitpair.norm, hitPoints[id].norm) > eps)
-                        {
-                            hitPoints[id].M += 1;
-                            hitPoints[id].tau += hitpair.col;
-                            numpair++;
-                        }
-                    }
-            for (int i = 0; i < n_hitPoints; i++)
-            {
-                int N = hitPoints[i].N;
-                int M = hitPoints[i].M;
-                if (N + M != 0)
-                {
-                    hitPoints[i].radius *= sqrt((N + alpha * M) / (N + M));
-                    hitPoints[i].tau *= (N + alpha * M) / (N + M);
-                    hitPoints[i].N = N + alpha * M;
-                    hitPoints[i].M = 0;
-                }
-            }
-        }
-        printf("hit photon %d \n", numpair);*/
         image.SetAllPixels(Vector3f::ZERO);
         for (auto hitPoint : hitPoints)
         {
             int x = hitPoint.x, y = hitPoint.y;
             Vector3f color = image.GetPixel(x, y);
             color += hitPoint.col * hitPoint.tau / M_PI / hitPoint.radius / hitPoint.radius / (num_photons * round);
-            /*if (color.x() > 0.5)
-            {
-                printf("%d %d %.5f %.5f\n", x, y, hitPoint.N, hitPoint.radius);
-                hitPoint.tau.print();
-                hitPoint.pos.print();
-                hitPoint.col.print();
-                color.print();
-            }*/
             image.SetPixel(x, y, color);
         }
         for (int x = 0; x < camera->getWidth(); x++)

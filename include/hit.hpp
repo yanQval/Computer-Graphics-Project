@@ -16,7 +16,7 @@ public:
         t = 1e38;
     }
 
-    Hit(float _t, Material *m, const Vector3f &n, const bool in = true)
+    Hit(float _t, Material *m, const Vector3f &n, const bool in)
     {
         t = _t;
         material = m;
@@ -54,11 +54,12 @@ public:
         return into;
     }
 
-    void set(float _t, Material *m, const Vector3f &n)
+    void set(float _t, Material *m, const Vector3f &n, const bool &in)
     {
         t = _t;
         material = m;
         normal = n;
+        into = in;
     }
 
 private:

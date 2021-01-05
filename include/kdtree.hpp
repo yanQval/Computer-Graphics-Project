@@ -9,16 +9,26 @@
 
 using namespace std;
 
+struct TreeNode
+{
+    HitPoint *pointer;
+    TreeNode *lc, *rc;
+    float Rmax;
+    Vector3f rangeMax, rangeMin;
+};
+
 class KDTree
 {
 public:
     KDTree() = delete;
     KDTree(vector<HitPoint> *hitPoints);
-    void query(Vector3f pos, float Rmax, vector<HitPoint *> *result);
+    void query(Vector3f pos, vector<HitPoint *> *result);
 
 private:
-    vector<Vector3f> pos;
-    map<pair<pair<int, int>, int>, vector<HitPoint *>> mp;
+    void build(TreeNode *&x, int l, int r, int depth);
+    void query(TreeNode *x, Vector3f q_pos, vector<HitPoint *> *result);
+    vector<HitPoint *> data;
+    TreeNode *root;
 };
 
 #endif

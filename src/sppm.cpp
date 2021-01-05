@@ -48,7 +48,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
     //float p = max(max(c.x(), c.y()), c.z());
     //printf("%d %.5f\n", depth, p);
-    if (++depth > 20)
+    if (++depth > 30)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -83,7 +83,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
-        if (depth > 20)
+        if (depth > 30)
         {
             if (frand(mt_rand) < P)
                 rayTracing(reflRay, depth, sceneParser, hitPoints, _x, _y, c * RP, mt_rand);
@@ -98,7 +98,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
     }
 }
 
-void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<HitPoint *> *tmp, Vector3f col, KDTree *kdt, float Rmax, mt19937 *mt_rand)
+void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<HitPoint *> *tmp, Vector3f col, KDTree *kdt, mt19937 *mt_rand)
 {
     //printf("%d\n", depth);
     Group *basegroup = sceneParser->getGroup();
@@ -124,7 +124,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     {
         tmp->clear();
         //printf("%d\n",tmp->size());
-        kdt->query(x, Rmax, tmp);
+        kdt->query(x, tmp);
         //printf("%d\n",tmp->size());
         for (HitPoint *pointer : *tmp)
         {
@@ -149,11 +149,11 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
 
         Vector3f w = n, u = Vector3f::cross((fabs(w.x()) > .1 ? Vector3f(0, 1, 0) : Vector3f(1, 0, 0)), w).normalized(), v = Vector3f::cross(w, u);
         Vector3f d = (u * cos(r1) * r2s + v * sin(r1) * r2s + w * sqrt(1 - r2)).normalized();
-        photonTracing(Ray(x, d), depth, sceneParser, tmp, c, kdt, Rmax, mt_rand);
+        photonTracing(Ray(x, d), depth, sceneParser, tmp, c, kdt, mt_rand);
     }
     else if (hit.getMaterial()->getType() == SPEC)
     {
-        photonTracing(Ray(x, r.getDirection() - n * 2 * Vector3f::dot(n, (r.getDirection()))), depth, sceneParser, tmp, c, kdt, Rmax, mt_rand);
+        photonTracing(Ray(x, r.getDirection() - n * 2 * Vector3f::dot(n, (r.getDirection()))), depth, sceneParser, tmp, c, kdt, mt_rand);
     }
     else if (hit.getMaterial()->getType() == REFL)
     {
@@ -166,7 +166,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         Ray reflRay(x, r.getDirection() - n * 2 * Vector3f::dot(n, r.getDirection()));
         if (cos2t < 0)
         {
-            photonTracing(Ray(x, r.getDirection() - n * 2 * Vector3f::dot(n, (r.getDirection()))), depth, sceneParser, tmp, c, kdt, Rmax, mt_rand);
+            photonTracing(Ray(x, r.getDirection() - n * 2 * Vector3f::dot(n, (r.getDirection()))), depth, sceneParser, tmp, c, kdt, mt_rand);
             return;
         }
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
@@ -176,14 +176,14 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         if (depth > 6)
         {
             if (frand(mt_rand) < P)
-                photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt, Rmax, mt_rand);
+                photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt,mt_rand);
             else
-                photonTracing(Ray(x, tdir), depth, sceneParser, tmp, c * TP, kdt, Rmax, mt_rand);
+                photonTracing(Ray(x, tdir), depth, sceneParser, tmp, c * TP, kdt, mt_rand);
         }
         else
         {
-            photonTracing(reflRay, depth, sceneParser, tmp, c * Re, kdt, Rmax, mt_rand);
-            photonTracing(Ray(x, tdir), depth, sceneParser, tmp, c * Tr, kdt, Rmax, mt_rand);
+            photonTracing(reflRay, depth, sceneParser, tmp, c * Re, kdt, mt_rand);
+            photonTracing(Ray(x, tdir), depth, sceneParser, tmp, c * Tr, kdt, mt_rand);
         }
     }
 }
@@ -232,21 +232,14 @@ Image SPPM::run()
 
     int n_hitPoints = hitPoints.size();
     printf("%d\n", n_hitPoints);
+
+    for (int i = 0; i < n_hitPoints; i++)
+        hitPoints[i].radius = Rmax;
+
     KDTree kdtree(&hitPoints);
 
     for (int round = 1; round <= t_round; round++)
     {
-        if (round == 1)
-        {
-            for (int i = 0; i < n_hitPoints; i++)
-                hitPoints[i].radius = Rmax;
-        }
-        else
-        {
-            Rmax = 0;
-            for (int i = 0; i < n_hitPoints; i++)
-                Rmax = max(Rmax, hitPoints[i].radius);
-        }
 
         for (int li = 0; li < sceneParser->getNumLights(); li++)
         {
@@ -254,13 +247,13 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
             for (int photon = 0; photon < num_photons; photon++)
             {
-                fprintf(stderr, "\rRendering  %5.2f%%",  100. * photon / (num_photons - 1));
+                fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
                 Vector3f lightColor;
                 vector<HitPoint *> tmp;
                 Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
                 mt19937 mt_rand(round * num_photons + photon);
                 light->generatePhoton(phoRay, lightColor, &mt_rand);
-                photonTracing(phoRay, 0, sceneParser, &tmp, lightColor, &kdtree, Rmax, &mt_rand);
+                photonTracing(phoRay, 0, sceneParser, &tmp, lightColor, &kdtree, &mt_rand);
             }
         }
         if (round == 1)

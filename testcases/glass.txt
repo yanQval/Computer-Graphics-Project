@@ -10,7 +10,7 @@ PerspectiveCamera {
 Lights {
     numLights 1
     PointLight {
-        position 90 25 71.6
+        position 90 25 50
         color 8000 8000 8000
     }
 }

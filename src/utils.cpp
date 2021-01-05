@@ -45,3 +45,13 @@ float dis(Vector3f a, Vector3f b)
 {
     return (a - b).length();
 }
+
+Vector3f min(const Vector3f &x, const Vector3f &y)
+{
+    return Vector3f(min(x[0], y[0]), min(x[1], y[1]), min(x[2], y[2]));
+}
+
+Vector3f max(const Vector3f &x, const Vector3f &y)
+{
+    return Vector3f(max(x[0], y[0]), max(x[1], y[1]), max(x[2], y[2]));
+}

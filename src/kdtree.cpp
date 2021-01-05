@@ -7,20 +7,21 @@
 
 using namespace std;
 
-KDTree::KDTree(const vector<HitPoint> *hitPoints)
+KDTree::KDTree(vector<HitPoint> *hitPoints)
 {
     int id = 0;
-    for (auto hitPoint : *hitPoints)
+    for (int i = 0; i < hitPoints->size(); i++)
     {
+        HitPoint hitPoint = (*hitPoints)[i];
         pos.push_back(hitPoint.pos);
         int x = int(hitPoint.pos.x());
         int y = int(hitPoint.pos.y());
         int z = int(hitPoint.pos.z());
-        mp[make_pair(make_pair(x, y), z)].push_back(id++);
+        mp[make_pair(make_pair(x, y), z)].push_back(&(*hitPoints)[i]);
     }
 }
 
-void KDTree::query(Vector3f q_pos, float Rmax, vector<int> *result)
+void KDTree::query(Vector3f q_pos, float Rmax, vector<HitPoint *> *result)
 {
     result->clear();
     int x = int(q_pos.x());

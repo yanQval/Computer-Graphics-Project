@@ -13,12 +13,12 @@ class KDTree
 {
 public:
     KDTree() = delete;
-    KDTree(const vector<HitPoint> *hitPoints);
-    void query(Vector3f pos, float Rmax, vector<int> *result);
+    KDTree(vector<HitPoint> *hitPoints);
+    void query(Vector3f pos, float Rmax, vector<HitPoint *> *result);
 
 private:
     vector<Vector3f> pos;
-    map<pair<pair<int, int>, int>, vector<int>> mp;
+    map<pair<pair<int, int>, int>, vector<HitPoint *>> mp;
 };
 
 #endif

@@ -9,7 +9,7 @@
 
 int flag_mesh;
 
-bool cmp2(const Mesh::Info x, const Mesh::Info y)
+bool cmp_mesh(const Mesh::Info x, const Mesh::Info y)
 {
     return x.rangeMin[flag_mesh] < y.rangeMin[flag_mesh];
 }
@@ -23,7 +23,7 @@ void Mesh::build_mesh(TreeNode *&x, int l, int r, int depth, vector<Info> &t)
     }
     flag_mesh = depth % 3;
     int m = (l + r) >> 1;
-    nth_element(t.begin() + l, t.begin() + m, t.begin() + r + 1, cmp2);
+    nth_element(t.begin() + l, t.begin() + m, t.begin() + r + 1, cmp_mesh);
     x = new TreeNode;
     x->data = t[m].data;
     x->normal = t[m].normal;
@@ -47,12 +47,13 @@ void update(float &t_min, float &t_max, float t0, float t1)
 {
     if (t0 > t1)
         swap(t0, t1);
-    t_min = min(t_min, t0);
-    t_max = max(t_max, t1);
+    t_min = max(t_min, t0);
+    t_max = min(t_max, t1);
 }
 
 bool Mesh::query_mesh(TreeNode *x, const Ray &r, Hit &h, float tmin)
 {
+    //printf("%p\n", x);
     if (x == NULL)
         return false;
     float t_min = tmin, t_max = h.getT();
@@ -69,11 +70,15 @@ bool Mesh::query_mesh(TreeNode *x, const Ray &r, Hit &h, float tmin)
     bool result = triangle.intersect(r, h, tmin);
     result |= query_mesh(x->lc, r, h, tmin);
     result |= query_mesh(x->rc, r, h, tmin);
+    //if(result == false){puts("???");printf("%.5f %.5f\n", t_min, t_max);}
+    //else puts("!!!!");
     return result;
 }
 
 bool Mesh::intersect(const Ray &r, Hit &h, float tmin)
 {
+    //Hit h2 = h;
+    //bool result1 = query_mesh(root, r, h2, tmin);
     return query_mesh(root, r, h, tmin);
     // Optional: Change this brute force method into a faster one.
     bool result = false;
@@ -85,6 +90,8 @@ bool Mesh::intersect(const Ray &r, Hit &h, float tmin)
         triangle.normal = n[triId];
         result |= triangle.intersect(r, h, tmin);
     }
+    //assert(result == result1);
+    //assert(fabs(h2.getT() - h.getT()) < 1e-2);
     return result;
 }
 
@@ -177,7 +184,7 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material)
         info.normal = n[i];
         infoData.push_back(info);
     }
-
+    puts("!!!");
     build_mesh(root, 0, _n - 1, 0, infoData);
 
     f.close();

@@ -1,0 +1,80 @@
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_703f0/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_703f0.dir/build.make CMakeFiles/cmTC_703f0.dir/build
+Building CXX object CMakeFiles/cmTC_703f0.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -fopenmp=libomp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -o CMakeFiles/cmTC_703f0.dir/OpenMPTryFlag.cpp.o -c "/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp"
+Apple LLVM version 10.0.1 (clang-1001.0.46.4)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported argument 'libomp' to option 'fopenmp='
+make[2]: *** [CMakeFiles/cmTC_703f0.dir/OpenMPTryFlag.cpp.o] Error 1
+make[1]: *** [cmTC_703f0/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_76954/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_76954.dir/build.make CMakeFiles/cmTC_76954.dir/build
+Building CXX object CMakeFiles/cmTC_76954.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -fopenmp=libiomp5 -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -o CMakeFiles/cmTC_76954.dir/OpenMPTryFlag.cpp.o -c "/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp"
+Apple LLVM version 10.0.1 (clang-1001.0.46.4)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported argument 'libiomp5' to option 'fopenmp='
+make[2]: *** [CMakeFiles/cmTC_76954.dir/OpenMPTryFlag.cpp.o] Error 1
+make[1]: *** [cmTC_76954/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_724e0/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_724e0.dir/build.make CMakeFiles/cmTC_724e0.dir/build
+Building CXX object CMakeFiles/cmTC_724e0.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -fopenmp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -o CMakeFiles/cmTC_724e0.dir/OpenMPTryFlag.cpp.o -c "/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp"
+Apple LLVM version 10.0.1 (clang-1001.0.46.4)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+clang: error: unsupported option '-fopenmp'
+make[2]: *** [CMakeFiles/cmTC_724e0.dir/OpenMPTryFlag.cpp.o] Error 1
+make[1]: *** [cmTC_724e0/fast] Error 2
+
+
+
+Detecting CXX OpenMP failed with the following output:
+Change Dir: /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_19175/fast && /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_19175.dir/build.make CMakeFiles/cmTC_19175.dir/build
+Building CXX object CMakeFiles/cmTC_19175.dir/OpenMPTryFlag.cpp.o
+/Library/Developer/CommandLineTools/usr/bin/c++   -Xclang -fopenmp -v -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -o CMakeFiles/cmTC_19175.dir/OpenMPTryFlag.cpp.o -c "/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp"
+Apple LLVM version 10.0.1 (clang-1001.0.46.4)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple x86_64-apple-macosx10.14.0 -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -emit-obj -mrelax-all -disable-free -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.cpp -mrelocation-model pic -pic-level 2 -mthread-model posix -mdisable-fp-elim -fno-strict-return -masm-verbose -munwind-tables -target-sdk-version=10.14 -target-cpu penryn -dwarf-column-info -debugger-tuning=lldb -target-linker-version 450.3 -v -coverage-notes-file /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/CMakeTmp/CMakeFiles/cmTC_19175.dir/OpenMPTryFlag.cpp.gcno -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/10.0.1 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk -stdlib=libc++ -Wno-atomic-implicit-seq-cst -Wno-framework-include-private-from-public -Wno-atimport-in-framework-header -Wno-quoted-include-in-framework-header -fdeprecated-macro -fdebug-compilation-dir /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/CMakeTmp -ferror-limit 19 -fmessage-length 0 -stack-protector 1 -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fobjc-runtime=macosx-10.14.0 -fcxx-exceptions -fexceptions -fmax-type-align=16 -fdiagnostics-show-option -fopenmp -o CMakeFiles/cmTC_19175.dir/OpenMPTryFlag.cpp.o -x c++ /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp
+clang -cc1 version 10.0.1 (clang-1001.0.46.4) default target x86_64-apple-darwin18.7.0
+ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include/c++/v1"
+ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/local/include"
+ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/Library/Frameworks"
+#include "..." search starts here:
+#include <...> search starts here:
+ /Library/Developer/CommandLineTools/usr/include/c++/v1
+ /Library/Developer/CommandLineTools/usr/lib/clang/10.0.1/include
+ /Library/Developer/CommandLineTools/usr/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include
+ /Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/System/Library/Frameworks (framework directory)
+End of search list.
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/build/CMakeFiles/FindOpenMP/OpenMPTryFlag.cpp:2:10: fatal error: 'omp.h' file not found
+#include <omp.h>
+         ^~~~~~~
+1 error generated.
+make[2]: *** [CMakeFiles/cmTC_19175.dir/OpenMPTryFlag.cpp.o] Error 1
+make[1]: *** [cmTC_19175/fast] Error 2
+
+
+

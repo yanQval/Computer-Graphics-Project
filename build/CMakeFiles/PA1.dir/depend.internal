@@ -63,6 +63,7 @@ CMakeFiles/PA1.dir/src/mesh.cpp.o
  ../include/object3d.hpp
  ../include/ray.hpp
  ../include/triangle.hpp
+ ../include/utils.hpp
  /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/mesh.cpp
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o
  ../deps/vecmath/include/Matrix2f.h

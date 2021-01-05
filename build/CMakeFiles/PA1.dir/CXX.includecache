@@ -46,65 +46,13 @@ Vector3f.h
 Vector4f.h
 ../deps/vecmath/include/Vector4f.h
 
-../include/camera.hpp
-ray.hpp
-../include/ray.hpp
-vecmath.h
--
-float.h
--
-cmath
--
-
 ../include/constant.h
 
-../include/group.hpp
-object3d.hpp
-../include/object3d.hpp
-ray.hpp
-../include/ray.hpp
-hit.hpp
-../include/hit.hpp
-iostream
--
-vector
--
-
 ../include/hit.hpp
 vecmath.h
 -
 ray.hpp
 ../include/ray.hpp
-
-../include/hitpoint.hpp
-vecmath.h
--
-cmath
--
-
-../include/image.hpp
-cassert
--
-vecmath.h
--
-
-../include/kdtree.hpp
-Vector3f.h
-../include/Vector3f.h
-hitpoint.hpp
-../include/hitpoint.hpp
-vector
--
-map
--
-
-../include/light.hpp
-Vector3f.h
--
-object3d.hpp
-../include/object3d.hpp
-utils.hpp
-../include/utils.hpp
 
 ../include/material.hpp
 cassert
@@ -117,6 +65,18 @@ hit.hpp
 ../include/hit.hpp
 iostream
 -
+
+../include/mesh.hpp
+vector
+-
+object3d.hpp
+../include/object3d.hpp
+triangle.hpp
+../include/triangle.hpp
+Vector2f.h
+../include/Vector2f.h
+Vector3f.h
+../include/Vector3f.h
 
 ../include/object3d.hpp
 ray.hpp
@@ -134,15 +94,17 @@ iostream
 Vector3f.h
 -
 
-../include/scene_parser.hpp
-cassert
--
+../include/triangle.hpp
+object3d.hpp
+../include/object3d.hpp
+constant.h
+../include/constant.h
 vecmath.h
 -
-
-../include/sppm.hpp
-Vector3f.h
-../include/Vector3f.h
+cmath
+-
+iostream
+-
 
 ../include/utils.hpp
 random
@@ -150,53 +112,21 @@ random
 vecmath.h
 -
 
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.cpp
-kdtree.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.hpp
-hitpoint.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/hitpoint.hpp
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/mesh.cpp
+mesh.hpp
+/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/mesh.hpp
 utils.hpp
 /Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/utils.hpp
-vector
--
-map
--
-
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/sppm.cpp
-sppm.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/sppm.hpp
-image.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/image.hpp
-scene_parser.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/scene_parser.hpp
-camera.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/camera.hpp
-hitpoint.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/hitpoint.hpp
-utils.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/utils.hpp
-constant.h
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/constant.h
-group.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/group.hpp
-light.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/light.hpp
-kdtree.hpp
-/Users/yanQval/Desktop/course/2020-2021 autumn/Advanced Computer Graphics/Computer-Graphics-Project/src/kdtree.hpp
-vector
--
-cassert
--
-cstdio
--
-cstdlib
--
-cstring
--
-cmath
+fstream
 -
 iostream
 -
-random
+algorithm
+-
+cstdlib
+-
+utility
+-
+sstream
 -
 

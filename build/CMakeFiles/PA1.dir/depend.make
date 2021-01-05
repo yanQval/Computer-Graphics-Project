@@ -62,6 +62,7 @@ CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/mesh.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/object3d.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/ray.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/triangle.hpp
+CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/utils.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../src/mesh.cpp
 
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../deps/vecmath/include/Matrix2f.h

@@ -176,7 +176,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         if (depth > 6)
         {
             if (frand(mt_rand) < P)
-                photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt,mt_rand);
+                photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt, mt_rand);
             else
                 photonTracing(Ray(x, tdir), depth, sceneParser, tmp, c * TP, kdt, mt_rand);
         }
@@ -204,6 +204,7 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
     for (int x = 0; x < camera->getWidth(); x++)
     {
+        fprintf(stderr, "\rRay Rendering  %5.2f%%", 100. * x / (camera->getWidth() - 1));
         tmphit[x].clear();
         mt19937 mt_rand(x);
         for (int y = 0; y < camera->getHeight(); y++)

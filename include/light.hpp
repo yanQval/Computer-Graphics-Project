@@ -75,7 +75,7 @@ class CircleLight : public Light
 public:
     CircleLight() = delete;
 
-    CircleLight(const Vector3f &p, const float &r, const Vector3f &n, const Vector3f &c)
+    CircleLight(const Vector3f &p, const double &r, const Vector3f &n, const Vector3f &c)
     {
         position = p;
         radius = r;
@@ -92,7 +92,7 @@ public:
         Vector3f dir = semi_uniformSample(normal, mt_rand);
         Vector3f u = Vector3f::cross((fabs(normal.x()) > .1 ? Vector3f(0, 1, 0) : Vector3f(1, 0, 0)), normal).normalized();
         Vector3f v = Vector3f::cross(normal, u).normalized();
-        float x, y;
+        double x, y;
         do
         {
             x = (frand(mt_rand) - 0.5) * 2;
@@ -109,7 +109,7 @@ public:
 
 private:
     Vector3f position;
-    float radius;
+    double radius;
     Vector3f normal;
     Vector3f color;
 };

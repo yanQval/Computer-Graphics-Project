@@ -18,7 +18,7 @@ typedef int MaterialType;
 class Material
 {
 public:
-    explicit Material(const Vector3f &col, const MaterialType tp, float re = 0, const Vector3f &e = Vector3f::ZERO) : color(col), type(tp), reflRate(re), emi(e)
+    explicit Material(const Vector3f &col, const MaterialType tp, double re = 0, const Vector3f &e = Vector3f::ZERO) : color(col), type(tp), reflRate(re), emi(e)
     {
     }
 
@@ -39,7 +39,7 @@ public:
         return type;
     }
 
-    float getReflRate()
+    double getReflRate()
     {
         return reflRate;
     }
@@ -53,12 +53,12 @@ public:
                    const Vector3f &dirToLight, const Vector3f &lightColor)
     {
         Vector3f shaded = Vector3f::ZERO;
-        float t1 = Vector3f::dot(dirToLight, hit.getNormal());
+        double t1 = Vector3f::dot(dirToLight, hit.getNormal());
         if (t1 < 0)
             t1 = 0;
         Vector3f R;
         R = 2 * t1 * hit.getNormal() - dirToLight;
-        float t2 = Vector3f::dot(-ray.getDirection(), R);
+        double t2 = Vector3f::dot(-ray.getDirection(), R);
         if (t2 < 0)
             t2 = 0;
         t2 = pow(t2, shininess);
@@ -71,7 +71,7 @@ public:
 protected:
     Vector3f color;
     MaterialType type;
-    float reflRate;
+    double reflRate;
     Vector3f emi;
 };
 

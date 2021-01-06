@@ -36,7 +36,7 @@ public:
     std::vector<Vector3f> v;
     std::vector<TriangleIndex> t;
     std::vector<Vector3f> n;
-    bool intersect(const Ray &r, Hit &h, float tmin) override;
+    bool intersect(const Ray &r, Hit &h, double tmin) override;
 
 private:
     // Normal can be used for light estimation
@@ -54,7 +54,7 @@ private:
     vector<Info> infoData;
 
     void build_mesh(TreeNode *&x, int l, int r, int depth, vector<Info> &t);
-    bool query_mesh(TreeNode *x, const Ray &r, Hit &h, float tmin);
+    bool query_mesh(TreeNode *x, const Ray &r, Hit &h, double tmin);
 };
 
 #endif

@@ -20,7 +20,7 @@ void WriteByte( FILE* file, unsigned char b )
     assert( success == 1 );
 }
 
-unsigned char ClampColorComponent( float c )
+unsigned char ClampColorComponent( double c )
 {
     int tmp = int( c );
     

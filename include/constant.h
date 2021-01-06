@@ -1,6 +1,6 @@
 #ifndef CONST_H
 #define CONST_H
 
-const float eps = 1e-2;
+const double eps = 1e-2;
 
 #endif

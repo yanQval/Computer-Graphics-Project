@@ -25,8 +25,8 @@ public:
     Vector3f pos, norm, dir;
     int x, y;
     Vector3f col;
-    float radius;
-    float N;
+    double radius;
+    double N;
     int M;
     Vector3f tau;
 };

@@ -13,7 +13,7 @@ struct TreeNode
 {
     HitPoint *pointer;
     TreeNode *lc, *rc;
-    float Rmax;
+    double Rmax;
     Vector3f rangeMax, rangeMin;
 };
 

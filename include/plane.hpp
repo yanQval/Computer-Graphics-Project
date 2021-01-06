@@ -13,7 +13,7 @@ class Plane : public Object3D {
 public:
     Plane() = delete;
 
-    Plane(const Vector3f &_normal, float _d, Material *m) : Object3D(m) {
+    Plane(const Vector3f &_normal, double _d, Material *m) : Object3D(m) {
         assert(_normal.length() == 1);
         normal = _normal;
         d = _d;
@@ -22,8 +22,8 @@ public:
 
     ~Plane() override = default;
 
-    bool intersect(const Ray &r, Hit &h, float tmin) override {
-        Vector3f O, R; float t;
+    bool intersect(const Ray &r, Hit &h, double tmin) override {
+        Vector3f O, R; double t;
         O = r.getOrigin();
         R = r.getDirection();
         t = (d - Vector3f::dot(normal, O)) / Vector3f::dot(normal, R);
@@ -37,7 +37,7 @@ public:
 
 protected:
     Vector3f normal;
-    float d;
+    double d;
     Material *material;
 
 };

@@ -5,17 +5,18 @@
 
 using namespace std;
 
-float frand(mt19937 *mt_rand)
+
+double frand(mt19937 *mt_rand)
 {
-    return (float)mt_rand->operator()() / mt_rand->max();
+    return (double)mt_rand->operator()() / mt_rand->max();
 }
 
-float clamp(float x)
+double clamp(double x)
 {
     return x < 0 ? 0 : x > 1 ? 1 : x;
 }
 
-int toInt(float x)
+int toInt(double x)
 {
     return int(pow(clamp(x), 1 / 2.2) * 255 + .5);
 }
@@ -41,7 +42,7 @@ Vector3f semi_uniformSample(Vector3f n, mt19937 *rd)
     }
 }
 
-float dis(Vector3f a, Vector3f b)
+double dis(Vector3f a, Vector3f b)
 {
     return (a - b).length();
 }

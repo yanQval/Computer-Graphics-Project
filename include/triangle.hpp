@@ -25,8 +25,8 @@ public:
 		d = Vector3f::dot(normal, a);
 	}
 
-	bool intersect( const Ray& ray,  Hit& hit , float tmin) override {
-		Vector3f O, R, P; float t;
+	bool intersect( const Ray& ray,  Hit& hit , double tmin) override {
+		Vector3f O, R, P; double t;
         O = ray.getOrigin();
         R = ray.getDirection();
 		if(fabs(Vector3f::dot(normal, R)) < 1e-5) return false;
@@ -51,7 +51,7 @@ public:
 protected:
 	Vector3f vertices[3];
 	Material *material;
-	float  d;
+	double  d;
 };
 
 #endif //TRIANGLE_H

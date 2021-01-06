@@ -15,11 +15,11 @@ class Matrix4f
 public:
 
     // Fill a 4x4 matrix with "fill".  Default to 0.
-	Matrix4f( float fill = 0.f );
-	Matrix4f( float m00, float m01, float m02, float m03,
-		float m10, float m11, float m12, float m13,
-		float m20, float m21, float m22, float m23,
-		float m30, float m31, float m32, float m33 );
+	Matrix4f( double fill = 0.f );
+	Matrix4f( double m00, double m01, double m02, double m03,
+		double m10, double m11, double m12, double m13,
+		double m20, double m21, double m22, double m23,
+		double m30, double m31, double m32, double m33 );
 	
 	// setColumns = true ==> sets the columns of the matrix to be [v0 v1 v2 v3]
 	// otherwise, sets the rows
@@ -27,11 +27,11 @@ public:
 	
 	Matrix4f( const Matrix4f& rm ); // copy constructor
 	Matrix4f& operator = ( const Matrix4f& rm ); // assignment operator
-	Matrix4f& operator/=(float d);
+	Matrix4f& operator/=(double d);
 	// no destructor necessary
 
-	const float& operator () ( int i, int j ) const;
-	float& operator () ( int i, int j );
+	const double& operator () ( int i, int j ) const;
+	double& operator () ( int i, int j );
 
 	Vector4f getRow( int i ) const;
 	void setRow( int i, const Vector4f& v );
@@ -56,34 +56,34 @@ public:
 	// starting with upper left corner at (i0, j0)
 	void setSubmatrix3x3( int i0, int j0, const Matrix3f& m );
 
-	float determinant() const;
-	Matrix4f inverse( bool* pbIsSingular = NULL, float epsilon = 0.f ) const;
+	double determinant() const;
+	Matrix4f inverse( bool* pbIsSingular = NULL, double epsilon = 0.f ) const;
 
 	void transpose();
 	Matrix4f transposed() const;
 
 	// ---- Utility ----
-	operator float* (); // automatic type conversion for GL
-	operator const float* () const; // automatic type conversion for GL
+	operator double* (); // automatic type conversion for GL
+	operator const double* () const; // automatic type conversion for GL
 	
 	void print();
 
 	static Matrix4f ones();
 	static Matrix4f identity();
-	static Matrix4f translation( float x, float y, float z );
+	static Matrix4f translation( double x, double y, double z );
 	static Matrix4f translation( const Vector3f& rTranslation );
-	static Matrix4f rotateX( float radians );
-	static Matrix4f rotateY( float radians );
-	static Matrix4f rotateZ( float radians );
-	static Matrix4f rotation( const Vector3f& rDirection, float radians );
-	static Matrix4f scaling( float sx, float sy, float sz );
-	static Matrix4f uniformScaling( float s );
+	static Matrix4f rotateX( double radians );
+	static Matrix4f rotateY( double radians );
+	static Matrix4f rotateZ( double radians );
+	static Matrix4f rotation( const Vector3f& rDirection, double radians );
+	static Matrix4f scaling( double sx, double sy, double sz );
+	static Matrix4f uniformScaling( double s );
 	static Matrix4f lookAt( const Vector3f& eye, const Vector3f& center, const Vector3f& up );
-	static Matrix4f orthographicProjection( float width, float height, float zNear, float zFar, bool directX );
-	static Matrix4f orthographicProjection( float left, float right, float bottom, float top, float zNear, float zFar, bool directX );
-	static Matrix4f perspectiveProjection( float fLeft, float fRight, float fBottom, float fTop, float fZNear, float fZFar, bool directX );
-	static Matrix4f perspectiveProjection( float fovYRadians, float aspect, float zNear, float zFar, bool directX );
-	static Matrix4f infinitePerspectiveProjection( float fLeft, float fRight, float fBottom, float fTop, float fZNear, bool directX );
+	static Matrix4f orthographicProjection( double width, double height, double zNear, double zFar, bool directX );
+	static Matrix4f orthographicProjection( double left, double right, double bottom, double top, double zNear, double zFar, bool directX );
+	static Matrix4f perspectiveProjection( double fLeft, double fRight, double fBottom, double fTop, double fZNear, double fZFar, bool directX );
+	static Matrix4f perspectiveProjection( double fovYRadians, double aspect, double zNear, double zFar, bool directX );
+	static Matrix4f infinitePerspectiveProjection( double fLeft, double fRight, double fBottom, double fTop, double fZNear, bool directX );
 
 	// Returns the rotation matrix represented by a quaternion
 	// uses a normalized version of q
@@ -91,11 +91,11 @@ public:
 
 	// returns an orthogonal matrix that's a uniformly distributed rotation
 	// given u[i] is a uniformly distributed random number in [0,1]
-	static Matrix4f randomRotation( float u0, float u1, float u2 );
+	static Matrix4f randomRotation( double u0, double u1, double u2 );
 
 private:
 
-	float m_elements[ 16 ];
+	double m_elements[ 16 ];
 
 };
 

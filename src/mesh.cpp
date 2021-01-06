@@ -43,7 +43,7 @@ void Mesh::build_mesh(TreeNode *&x, int l, int r, int depth, vector<Info> &t)
     }
 }
 
-void update(float &t_min, float &t_max, float t0, float t1)
+void update(double &t_min, double &t_max, double t0, double t1)
 {
     if (t0 > t1)
         swap(t0, t1);
@@ -51,12 +51,12 @@ void update(float &t_min, float &t_max, float t0, float t1)
     t_max = min(t_max, t1);
 }
 
-bool Mesh::query_mesh(TreeNode *x, const Ray &r, Hit &h, float tmin)
+bool Mesh::query_mesh(TreeNode *x, const Ray &r, Hit &h, double tmin)
 {
     //printf("%p\n", x);
     if (x == NULL)
         return false;
-    float t_min = tmin, t_max = h.getT();
+    double t_min = tmin, t_max = h.getT();
     Vector3f a = (x->rangeMin - r.getOrigin()) / r.getDirection();
     Vector3f b = (x->rangeMax - r.getOrigin()) / r.getDirection();
     update(t_min, t_max, a[0], b[0]);
@@ -75,7 +75,7 @@ bool Mesh::query_mesh(TreeNode *x, const Ray &r, Hit &h, float tmin)
     return result;
 }
 
-bool Mesh::intersect(const Ray &r, Hit &h, float tmin)
+bool Mesh::intersect(const Ray &r, Hit &h, double tmin)
 {
     //Hit h2 = h;
     //bool result1 = query_mesh(root, r, h2, tmin);

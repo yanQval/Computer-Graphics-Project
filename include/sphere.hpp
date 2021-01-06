@@ -14,7 +14,7 @@ class Sphere : public Object3D
 public:
     Sphere() = delete;
 
-    Sphere(const Vector3f &_center, float _radius, Material *_material) : Object3D(_material)
+    Sphere(const Vector3f &_center, double _radius, Material *_material) : Object3D(_material)
     {
         center = _center;
         radius = _radius;
@@ -23,20 +23,20 @@ public:
 
     ~Sphere() override = default;
 
-    bool intersect(const Ray &r, Hit &h, float tmin) override
+    bool intersect(const Ray &r, Hit &h, double tmin) override
     {
         Vector3f O, Dir, H, P;
         bool into = true;
-        float flag = 1;
+        double flag = 1;
         O = r.getOrigin();
         Dir = r.getDirection();
-        float t = Vector3f::dot(Dir, center - O);
+        double t = Vector3f::dot(Dir, center - O);
         H = r.pointAtParameter(t);
-        float CH = (H - center).length();
+        double CH = (H - center).length();
         if (CH > radius - eps)
             return false;
         assert(radius * radius - CH * CH >= 0);
-        float tmp = sqrt(radius * radius - CH * CH);
+        double tmp = sqrt(radius * radius - CH * CH);
         t = t - tmp;
         if (t < eps)
         {
@@ -55,7 +55,7 @@ public:
 
 protected:
     Vector3f center;
-    float radius;
+    double radius;
     Material *material;
 };
 

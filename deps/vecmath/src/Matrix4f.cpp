@@ -11,7 +11,7 @@
 #include "Vector3f.h"
 #include "Vector4f.h"
 
-Matrix4f::Matrix4f( float fill )
+Matrix4f::Matrix4f( double fill )
 {
 	for( int i = 0; i < 16; ++i )
 	{
@@ -19,10 +19,10 @@ Matrix4f::Matrix4f( float fill )
 	}
 }
 
-Matrix4f::Matrix4f( float m00, float m01, float m02, float m03,
-				   float m10, float m11, float m12, float m13,
-				   float m20, float m21, float m22, float m23,
-				   float m30, float m31, float m32, float m33 )
+Matrix4f::Matrix4f( double m00, double m01, double m02, double m03,
+				   double m10, double m11, double m12, double m13,
+				   double m20, double m21, double m22, double m23,
+				   double m30, double m31, double m32, double m33 )
 {
 	m_elements[ 0 ] = m00;
 	m_elements[ 1 ] = m10;
@@ -45,7 +45,7 @@ Matrix4f::Matrix4f( float m00, float m01, float m02, float m03,
 	m_elements[ 15 ] = m33;
 }
 
-Matrix4f& Matrix4f::operator/=(float d)
+Matrix4f& Matrix4f::operator/=(double d)
 {
 	for(int ii=0;ii<16;ii++){
 		m_elements[ii]/=d;
@@ -73,24 +73,24 @@ Matrix4f::Matrix4f( const Vector4f& v0, const Vector4f& v1, const Vector4f& v2, 
 
 Matrix4f::Matrix4f( const Matrix4f& rm )
 {
-	memcpy( m_elements, rm.m_elements, 16 * sizeof( float ) );
+	memcpy( m_elements, rm.m_elements, 16 * sizeof( double ) );
 }
 
 Matrix4f& Matrix4f::operator = ( const Matrix4f& rm )
 {
 	if( this != &rm )
 	{
-		memcpy( m_elements, rm.m_elements, 16 * sizeof( float ) );
+		memcpy( m_elements, rm.m_elements, 16 * sizeof( double ) );
 	}
 	return *this;
 }
 
-const float& Matrix4f::operator () ( int i, int j ) const
+const double& Matrix4f::operator () ( int i, int j ) const
 {
 	return m_elements[ j * 4 + i ];
 }
 
-float& Matrix4f::operator () ( int i, int j )
+double& Matrix4f::operator () ( int i, int j )
 {
 	return m_elements[ j * 4 + i ];
 }
@@ -189,79 +189,79 @@ void Matrix4f::setSubmatrix3x3( int i0, int j0, const Matrix3f& m )
 	}
 }
 
-float Matrix4f::determinant() const
+double Matrix4f::determinant() const
 {
-	float m00 = m_elements[ 0 ];
-	float m10 = m_elements[ 1 ];
-	float m20 = m_elements[ 2 ];
-	float m30 = m_elements[ 3 ];
+	double m00 = m_elements[ 0 ];
+	double m10 = m_elements[ 1 ];
+	double m20 = m_elements[ 2 ];
+	double m30 = m_elements[ 3 ];
 
-	float m01 = m_elements[ 4 ];
-	float m11 = m_elements[ 5 ];
-	float m21 = m_elements[ 6 ];
-	float m31 = m_elements[ 7 ];
+	double m01 = m_elements[ 4 ];
+	double m11 = m_elements[ 5 ];
+	double m21 = m_elements[ 6 ];
+	double m31 = m_elements[ 7 ];
 
-	float m02 = m_elements[ 8 ];
-	float m12 = m_elements[ 9 ];
-	float m22 = m_elements[ 10 ];
-	float m32 = m_elements[ 11 ];
+	double m02 = m_elements[ 8 ];
+	double m12 = m_elements[ 9 ];
+	double m22 = m_elements[ 10 ];
+	double m32 = m_elements[ 11 ];
 
-	float m03 = m_elements[ 12 ];
-	float m13 = m_elements[ 13 ];
-	float m23 = m_elements[ 14 ];
-	float m33 = m_elements[ 15 ];
+	double m03 = m_elements[ 12 ];
+	double m13 = m_elements[ 13 ];
+	double m23 = m_elements[ 14 ];
+	double m33 = m_elements[ 15 ];
 
-	float cofactor00 =  Matrix3f::determinant3x3( m11, m12, m13, m21, m22, m23, m31, m32, m33 );
-	float cofactor01 = -Matrix3f::determinant3x3( m12, m13, m10, m22, m23, m20, m32, m33, m30 );
-	float cofactor02 =  Matrix3f::determinant3x3( m13, m10, m11, m23, m20, m21, m33, m30, m31 );
-	float cofactor03 = -Matrix3f::determinant3x3( m10, m11, m12, m20, m21, m22, m30, m31, m32 );
+	double cofactor00 =  Matrix3f::determinant3x3( m11, m12, m13, m21, m22, m23, m31, m32, m33 );
+	double cofactor01 = -Matrix3f::determinant3x3( m12, m13, m10, m22, m23, m20, m32, m33, m30 );
+	double cofactor02 =  Matrix3f::determinant3x3( m13, m10, m11, m23, m20, m21, m33, m30, m31 );
+	double cofactor03 = -Matrix3f::determinant3x3( m10, m11, m12, m20, m21, m22, m30, m31, m32 );
 
 	return( m00 * cofactor00 + m01 * cofactor01 + m02 * cofactor02 + m03 * cofactor03 );
 }
 
-Matrix4f Matrix4f::inverse( bool* pbIsSingular, float epsilon ) const
+Matrix4f Matrix4f::inverse( bool* pbIsSingular, double epsilon ) const
 {
-	float m00 = m_elements[ 0 ];
-	float m10 = m_elements[ 1 ];
-	float m20 = m_elements[ 2 ];
-	float m30 = m_elements[ 3 ];
+	double m00 = m_elements[ 0 ];
+	double m10 = m_elements[ 1 ];
+	double m20 = m_elements[ 2 ];
+	double m30 = m_elements[ 3 ];
 
-	float m01 = m_elements[ 4 ];
-	float m11 = m_elements[ 5 ];
-	float m21 = m_elements[ 6 ];
-	float m31 = m_elements[ 7 ];
+	double m01 = m_elements[ 4 ];
+	double m11 = m_elements[ 5 ];
+	double m21 = m_elements[ 6 ];
+	double m31 = m_elements[ 7 ];
 
-	float m02 = m_elements[ 8 ];
-	float m12 = m_elements[ 9 ];
-	float m22 = m_elements[ 10 ];
-	float m32 = m_elements[ 11 ];
+	double m02 = m_elements[ 8 ];
+	double m12 = m_elements[ 9 ];
+	double m22 = m_elements[ 10 ];
+	double m32 = m_elements[ 11 ];
 
-	float m03 = m_elements[ 12 ];
-	float m13 = m_elements[ 13 ];
-	float m23 = m_elements[ 14 ];
-	float m33 = m_elements[ 15 ];
+	double m03 = m_elements[ 12 ];
+	double m13 = m_elements[ 13 ];
+	double m23 = m_elements[ 14 ];
+	double m33 = m_elements[ 15 ];
 
-    float cofactor00 =  Matrix3f::determinant3x3( m11, m12, m13, m21, m22, m23, m31, m32, m33 );
-    float cofactor01 = -Matrix3f::determinant3x3( m12, m13, m10, m22, m23, m20, m32, m33, m30 );
-    float cofactor02 =  Matrix3f::determinant3x3( m13, m10, m11, m23, m20, m21, m33, m30, m31 );
-    float cofactor03 = -Matrix3f::determinant3x3( m10, m11, m12, m20, m21, m22, m30, m31, m32 );
+    double cofactor00 =  Matrix3f::determinant3x3( m11, m12, m13, m21, m22, m23, m31, m32, m33 );
+    double cofactor01 = -Matrix3f::determinant3x3( m12, m13, m10, m22, m23, m20, m32, m33, m30 );
+    double cofactor02 =  Matrix3f::determinant3x3( m13, m10, m11, m23, m20, m21, m33, m30, m31 );
+    double cofactor03 = -Matrix3f::determinant3x3( m10, m11, m12, m20, m21, m22, m30, m31, m32 );
     
-    float cofactor10 = -Matrix3f::determinant3x3( m21, m22, m23, m31, m32, m33, m01, m02, m03 );
-    float cofactor11 =  Matrix3f::determinant3x3( m22, m23, m20, m32, m33, m30, m02, m03, m00 );
-    float cofactor12 = -Matrix3f::determinant3x3( m23, m20, m21, m33, m30, m31, m03, m00, m01 );
-    float cofactor13 =  Matrix3f::determinant3x3( m20, m21, m22, m30, m31, m32, m00, m01, m02 );
+    double cofactor10 = -Matrix3f::determinant3x3( m21, m22, m23, m31, m32, m33, m01, m02, m03 );
+    double cofactor11 =  Matrix3f::determinant3x3( m22, m23, m20, m32, m33, m30, m02, m03, m00 );
+    double cofactor12 = -Matrix3f::determinant3x3( m23, m20, m21, m33, m30, m31, m03, m00, m01 );
+    double cofactor13 =  Matrix3f::determinant3x3( m20, m21, m22, m30, m31, m32, m00, m01, m02 );
     
-    float cofactor20 =  Matrix3f::determinant3x3( m31, m32, m33, m01, m02, m03, m11, m12, m13 );
-    float cofactor21 = -Matrix3f::determinant3x3( m32, m33, m30, m02, m03, m00, m12, m13, m10 );
-    float cofactor22 =  Matrix3f::determinant3x3( m33, m30, m31, m03, m00, m01, m13, m10, m11 );
-    float cofactor23 = -Matrix3f::determinant3x3( m30, m31, m32, m00, m01, m02, m10, m11, m12 );
+    double cofactor20 =  Matrix3f::determinant3x3( m31, m32, m33, m01, m02, m03, m11, m12, m13 );
+    double cofactor21 = -Matrix3f::determinant3x3( m32, m33, m30, m02, m03, m00, m12, m13, m10 );
+    double cofactor22 =  Matrix3f::determinant3x3( m33, m30, m31, m03, m00, m01, m13, m10, m11 );
+    double cofactor23 = -Matrix3f::determinant3x3( m30, m31, m32, m00, m01, m02, m10, m11, m12 );
     
-    float cofactor30 = -Matrix3f::determinant3x3( m01, m02, m03, m11, m12, m13, m21, m22, m23 );
-    float cofactor31 =  Matrix3f::determinant3x3( m02, m03, m00, m12, m13, m10, m22, m23, m20 );
-    float cofactor32 = -Matrix3f::determinant3x3( m03, m00, m01, m13, m10, m11, m23, m20, m21 );
-    float cofactor33 =  Matrix3f::determinant3x3( m00, m01, m02, m10, m11, m12, m20, m21, m22 );
+    double cofactor30 = -Matrix3f::determinant3x3( m01, m02, m03, m11, m12, m13, m21, m22, m23 );
+    double cofactor31 =  Matrix3f::determinant3x3( m02, m03, m00, m12, m13, m10, m22, m23, m20 );
+    double cofactor32 = -Matrix3f::determinant3x3( m03, m00, m01, m13, m10, m11, m23, m20, m21 );
+    double cofactor33 =  Matrix3f::determinant3x3( m00, m01, m02, m10, m11, m12, m20, m21, m22 );
 
-	float determinant = m00 * cofactor00 + m01 * cofactor01 + m02 * cofactor02 + m03 * cofactor03;
+	double determinant = m00 * cofactor00 + m01 * cofactor01 + m02 * cofactor02 + m03 * cofactor03;
 
 	bool isSingular = ( fabs( determinant ) < epsilon );
 	if( isSingular )
@@ -279,7 +279,7 @@ Matrix4f Matrix4f::inverse( bool* pbIsSingular, float epsilon ) const
 			*pbIsSingular = false;
 		}
 
-		float reciprocalDeterminant = 1.0f / determinant;
+		double reciprocalDeterminant = 1.0f / determinant;
 
 		return Matrix4f
 			(
@@ -293,7 +293,7 @@ Matrix4f Matrix4f::inverse( bool* pbIsSingular, float epsilon ) const
 
 void Matrix4f::transpose()
 {
-	float temp;
+	double temp;
 
 	for( int i = 0; i < 3; ++i )
 	{
@@ -320,12 +320,12 @@ Matrix4f Matrix4f::transposed() const
 	return out;
 }
 
-Matrix4f::operator float* ()
+Matrix4f::operator double* ()
 {
 	return m_elements;
 }
 
-Matrix4f::operator const float* ()const
+Matrix4f::operator const double* ()const
 {
 	return m_elements;
 }
@@ -366,7 +366,7 @@ Matrix4f Matrix4f::identity()
 }
 
 // static
-Matrix4f Matrix4f::translation( float x, float y, float z )
+Matrix4f Matrix4f::translation( double x, double y, double z )
 {
 	return Matrix4f
 	(
@@ -390,10 +390,10 @@ Matrix4f Matrix4f::translation( const Vector3f& rTranslation )
 }
 
 // static
-Matrix4f Matrix4f::rotateX( float radians )
+Matrix4f Matrix4f::rotateX( double radians )
 {
-	float c = cos( radians );
-	float s = sin( radians );
+	double c = cos( radians );
+	double s = sin( radians );
 
 	return Matrix4f
 	(
@@ -405,10 +405,10 @@ Matrix4f Matrix4f::rotateX( float radians )
 }
 
 // static
-Matrix4f Matrix4f::rotateY( float radians )
+Matrix4f Matrix4f::rotateY( double radians )
 {
-	float c = cos( radians );
-	float s = sin( radians );
+	double c = cos( radians );
+	double s = sin( radians );
 
 	return Matrix4f
 	(
@@ -420,10 +420,10 @@ Matrix4f Matrix4f::rotateY( float radians )
 }
 
 // static
-Matrix4f Matrix4f::rotateZ( float radians )
+Matrix4f Matrix4f::rotateZ( double radians )
 {
-	float c = cos( radians );
-	float s = sin( radians );
+	double c = cos( radians );
+	double s = sin( radians );
 
 	return Matrix4f
 	(
@@ -435,16 +435,16 @@ Matrix4f Matrix4f::rotateZ( float radians )
 }
 
 // static
-Matrix4f Matrix4f::rotation( const Vector3f& rDirection, float radians )
+Matrix4f Matrix4f::rotation( const Vector3f& rDirection, double radians )
 {
 	Vector3f normalizedDirection = rDirection.normalized();
 	
-	float cosTheta = cos( radians );
-	float sinTheta = sin( radians );
+	double cosTheta = cos( radians );
+	double sinTheta = sin( radians );
 
-	float x = normalizedDirection.x();
-	float y = normalizedDirection.y();
-	float z = normalizedDirection.z();
+	double x = normalizedDirection.x();
+	double y = normalizedDirection.y();
+	double z = normalizedDirection.z();
 
 	return Matrix4f
 	(
@@ -460,18 +460,18 @@ Matrix4f Matrix4f::rotation( const Quat4f& q )
 {
 	Quat4f qq = q.normalized();
 
-	float xx = qq.x() * qq.x();
-	float yy = qq.y() * qq.y();
-	float zz = qq.z() * qq.z();
+	double xx = qq.x() * qq.x();
+	double yy = qq.y() * qq.y();
+	double zz = qq.z() * qq.z();
 
-	float xy = qq.x() * qq.y();
-	float zw = qq.z() * qq.w();
+	double xy = qq.x() * qq.y();
+	double zw = qq.z() * qq.w();
 
-	float xz = qq.x() * qq.z();
-	float yw = qq.y() * qq.w();
+	double xz = qq.x() * qq.z();
+	double yw = qq.y() * qq.w();
 
-	float yz = qq.y() * qq.z();
-	float xw = qq.x() * qq.w();
+	double yz = qq.y() * qq.z();
+	double xw = qq.x() * qq.w();
 
 	return Matrix4f
 	(
@@ -483,7 +483,7 @@ Matrix4f Matrix4f::rotation( const Quat4f& q )
 }
 
 // static
-Matrix4f Matrix4f::scaling( float sx, float sy, float sz )
+Matrix4f Matrix4f::scaling( double sx, double sy, double sz )
 {
 	return Matrix4f
 	(
@@ -495,7 +495,7 @@ Matrix4f Matrix4f::scaling( float sx, float sy, float sz )
 }
 
 // static
-Matrix4f Matrix4f::uniformScaling( float s )
+Matrix4f Matrix4f::uniformScaling( double s )
 {
 	return Matrix4f
 	(
@@ -507,7 +507,7 @@ Matrix4f Matrix4f::uniformScaling( float s )
 }
 
 // static
-Matrix4f Matrix4f::randomRotation( float u0, float u1, float u2 )
+Matrix4f Matrix4f::randomRotation( double u0, double u1, double u2 )
 {
 	return Matrix4f::rotation( Quat4f::randomRotation( u0, u1, u2 ) );
 }
@@ -533,7 +533,7 @@ Matrix4f Matrix4f::lookAt( const Vector3f& eye, const Vector3f& center, const Ve
 }
 
 // static
-Matrix4f Matrix4f::orthographicProjection( float width, float height, float zNear, float zFar, bool directX )
+Matrix4f Matrix4f::orthographicProjection( double width, double height, double zNear, double zFar, bool directX )
 {
 	Matrix4f m;
 
@@ -559,7 +559,7 @@ Matrix4f Matrix4f::orthographicProjection( float width, float height, float zNea
 }
 
 // static
-Matrix4f Matrix4f::orthographicProjection( float left, float right, float bottom, float top, float zNear, float zFar, bool directX )
+Matrix4f Matrix4f::orthographicProjection( double left, double right, double bottom, double top, double zNear, double zFar, bool directX )
 {
 	Matrix4f m;
 
@@ -585,9 +585,9 @@ Matrix4f Matrix4f::orthographicProjection( float left, float right, float bottom
 }
 
 // static
-Matrix4f Matrix4f::perspectiveProjection( float fLeft, float fRight,
-										 float fBottom, float fTop,
-										 float fZNear, float fZFar,
+Matrix4f Matrix4f::perspectiveProjection( double fLeft, double fRight,
+										 double fBottom, double fTop,
+										 double fZNear, double fZFar,
 										 bool directX )
 {
 	Matrix4f projection; // zero matrix
@@ -613,12 +613,12 @@ Matrix4f Matrix4f::perspectiveProjection( float fLeft, float fRight,
 }
 
 // static
-Matrix4f Matrix4f::perspectiveProjection( float fovYRadians, float aspect, float zNear, float zFar, bool directX )
+Matrix4f Matrix4f::perspectiveProjection( double fovYRadians, double aspect, double zNear, double zFar, bool directX )
 {
 	Matrix4f m; // zero matrix
 
-	float yScale = 1.f / tanf( 0.5f * fovYRadians );
-	float xScale = yScale / aspect;
+	double yScale = 1.f / tanf( 0.5f * fovYRadians );
+	double xScale = yScale / aspect;
 
 	m( 0, 0 ) = xScale;
 	m( 1, 1 ) = yScale;
@@ -639,9 +639,9 @@ Matrix4f Matrix4f::perspectiveProjection( float fovYRadians, float aspect, float
 }
 
 // static
-Matrix4f Matrix4f::infinitePerspectiveProjection( float fLeft, float fRight,
-												 float fBottom, float fTop,
-												 float fZNear, bool directX )
+Matrix4f Matrix4f::infinitePerspectiveProjection( double fLeft, double fRight,
+												 double fBottom, double fTop,
+												 double fZNear, bool directX )
 {
 	Matrix4f projection;
 

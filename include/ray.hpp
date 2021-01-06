@@ -29,7 +29,7 @@ public:
         return direction;
     }
 
-    Vector3f pointAtParameter(float t) const {
+    Vector3f pointAtParameter(double t) const {
         return origin + direction * t;
     }
 

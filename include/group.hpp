@@ -28,7 +28,7 @@ public:
 
     }
 
-    bool intersect(const Ray &r, Hit &h, float tmin) override {
+    bool intersect(const Ray &r, Hit &h, double tmin) override {
         bool hit = false;
         for(auto obj:list){
             assert(obj != nullptr);

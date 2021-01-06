@@ -26,7 +26,7 @@ public:
     ~Transform() {
     }
 
-    virtual bool intersect(const Ray &r, Hit &h, float tmin) {
+    virtual bool intersect(const Ray &r, Hit &h, double tmin) {
         Vector3f trSource = transformPoint(transform, r.getOrigin());
         Vector3f trDirection = transformDirection(transform, r.getDirection());
         Ray tr(trSource, trDirection);

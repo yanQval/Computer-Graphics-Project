@@ -51,8 +51,6 @@ ray.hpp
 ../include/ray.hpp
 vecmath.h
 -
-float.h
--
 cmath
 -
 

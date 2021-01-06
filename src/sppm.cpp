@@ -84,7 +84,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         double a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         double Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
-        if (depth > 50)
+        if (depth > -1)
         {
             if (frand(mt_rand) < P)
                 rayTracing(reflRay, depth, sceneParser, hitPoints, _x, _y, c * RP, mt_rand);
@@ -180,18 +180,171 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     }
 }
 
+HitPoint pixelData[5000][5000];
+
 Image SPPM::run()
 {
+    int n_threads = 30;
+    int t_round = 10000;
+    int num_photons = 10000;
+    num_photons = num_photons / n_threads * n_threads;
+    double alpha = .7;
+    double Rmax = 0.5;
+
     Camera *camera = sceneParser->getCamera();
     printf("%d %d\n", camera->getWidth(), camera->getHeight());
     Image image(camera->getWidth(), camera->getHeight());
 
-    vector<HitPoint> hitPoints;
+    //HitPoint *pixelData = new HitPoint[camera->getWidth()][camera->getHeight()];
+    for (int x = 0; x < camera->getWidth(); x++)
+        for (int y = 0; y < camera->getHeight(); y++)
+        {
+            pixelData[x][y].N = 0;
+            pixelData[x][y].M = 0;
+            pixelData[x][y].radius = Rmax;
+            pixelData[x][y].tau = Vector3f::ZERO;
+            pixelData[x][y].col = Vector3f::ZERO;
+        }
+
+    for (int round = 1; round <= t_round; round++)
+    {
+        vector<HitPoint> hitPoints;
+        hitPoints.clear();
+
+        vector<HitPoint> tmphit[camera->getWidth()];
+
+#pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
+        for (int x = 0; x < camera->getWidth(); x++)
+        {
+            fprintf(stderr, "\rRay Rendering  %5.2f%%", 100. * x / (camera->getWidth() - 1));
+            tmphit[x].clear();
+            mt19937 mt_rand(round * camera->getWidth() + x);
+            for (int y = 0; y < camera->getHeight(); y++)
+            {
+                double px = x + frand(&mt_rand);
+                double py = y + frand(&mt_rand);
+                Ray camRay = camera->generateRay(Vector2f(px, py));
+                rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1, 1, 1), &mt_rand);
+            }
+        }
+        for (int x = 0; x < camera->getWidth(); x++)
+        {
+            for (auto hitPoint : tmphit[x])
+            {
+                //hitPoint.print();
+                hitPoints.push_back(hitPoint);
+                //hitPoint.col.print();
+                //image.SetPixel(hitPoint.x, hitPoint.y, Vector3f(toInt(hitPoint.col.x()), toInt(hitPoint.col.y()), toInt(hitPoint.col.z())));
+            }
+        }
+
+        int n_hitPoints = hitPoints.size();
+        printf("%d\n", n_hitPoints);
+
+        for (int i = 0; i < n_hitPoints; i++)
+        {
+            int x = hitPoints[i].x, y = hitPoints[i].y;
+            hitPoints[i].radius = pixelData[x][y].radius;
+        }
+        KDTree kdtree(&hitPoints);
+
+        for (int li = 0; li < sceneParser->getNumLights(); li++)
+        {
+            Light *light = sceneParser->getLight(li);
+#pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
+            for (int th = 0; th < n_threads; th++)
+            {
+                mt19937 mt_rand(round * n_threads + th);
+                for (int photon = 0; photon < num_photons / n_threads; photon++)
+                {
+                    fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
+                    Vector3f lightColor;
+                    vector<HitPoint *> tmp;
+                    Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
+                    light->generatePhoton(phoRay, lightColor, &mt_rand);
+                    photonTracing(phoRay, 0, sceneParser, &tmp, lightColor, &kdtree, &mt_rand);
+                }
+            }
+        }
+
+        for (int x = 0; x < camera->getWidth(); x++)
+            for (int y = 0; y < camera->getHeight(); y++)
+            {
+                pixelData[x][y].x = 0;
+            }
+
+        for (auto hitPoint : hitPoints)
+        {
+            int x = hitPoint.x, y = hitPoint.y;
+            int &num = pixelData[x][y].x;
+            pixelData[x][y].M = (pixelData[x][y].M * num + hitPoint.M) / (num + 1);
+            //pixelData[x][y].col = (pixelData[x][y].col * num + hitPoint.tau * hitPoint.col) / (num + 1);
+            pixelData[x][y].col = (pixelData[x][y].col + hitPoint.tau * hitPoint.col);
+            num++;
+        }
+
+        if (round == 1)
+        {
+            for (int x = 0; x < camera->getWidth(); x++)
+                for (int y = 0; y < camera->getHeight(); y++)
+                {
+                    pixelData[x][y].N = pixelData[x][y].M;
+                    pixelData[x][y].M = 0;
+                    pixelData[x][y].tau = pixelData[x][y].col;
+                    //pixelData[x][y].tau.print();
+                    pixelData[x][y].col = Vector3f::ZERO;
+                }
+        }
+        else
+        {
+            for (int x = 0; x < camera->getWidth(); x++)
+                for (int y = 0; y < camera->getHeight(); y++)
+                {
+                    int N = pixelData[x][y].N;
+                    int M = pixelData[x][y].M;
+                    if (N + M != 0)
+                    {
+                        pixelData[x][y].radius *= sqrt((N + alpha * M) / (N + M));
+                        pixelData[x][y].tau += pixelData[x][y].col;
+                        pixelData[x][y].col = Vector3f::ZERO;
+                        pixelData[x][y].tau *= (N + alpha * M) / (N + M);
+                        pixelData[x][y].N = N + alpha * M;
+                        pixelData[x][y].M = 0;
+                    }
+                }
+        }
+
+        image.SetAllPixels(Vector3f::ZERO);
+        for (int x = 0; x < camera->getWidth(); x++)
+            for (int y = 0; y < camera->getHeight(); y++)
+            {
+                image.SetPixel(x, y, pixelData[x][y].tau / M_PI / pixelData[x][y].radius / pixelData[x][y].radius / num_photons / round);
+            }
+        for (int x = 0; x < camera->getWidth(); x++)
+        {
+            for (int y = 0; y < camera->getHeight(); y++)
+            {
+                Vector3f color = image.GetPixel(x, y);
+                image.SetPixel(x, y, Vector3f(toInt(color.x()), toInt(color.y()), toInt(color.z())));
+            }
+        }
+        time_t timep;
+        struct tm *p;
+        time(&timep);
+        p = gmtime(&timep);
+        fprintf(stderr, "\n");
+        fprintf(stderr, "%d:", 8 + p->tm_hour);
+        fprintf(stderr, "%d:", p->tm_min);
+        fprintf(stderr, "%d ", p->tm_sec);
+
+        fprintf(stderr, "round : %d\n", round);
+        image.SaveBMP(tmpOut.c_str());
+    }
+
+    /*vector<HitPoint> hitPoints;
     hitPoints.clear();
 
     vector<HitPoint> tmphit[camera->getWidth()];
-
-    int n_threads = 31;
 
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
     for (int x = 0; x < camera->getWidth(); x++)
@@ -207,6 +360,7 @@ Image SPPM::run()
             rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1, 1, 1), &mt_rand);
         }
     }
+
     for (int x = 0; x < camera->getWidth(); x++)
     {
         for (auto hitPoint : tmphit[x])
@@ -217,12 +371,6 @@ Image SPPM::run()
             image.SetPixel(hitPoint.x, hitPoint.y, Vector3f(toInt(hitPoint.col.x()), toInt(hitPoint.col.y()), toInt(hitPoint.col.z())));
         }
     }
-
-    int t_round = 10000;
-    int num_photons = 1000000;
-    num_photons = num_photons / n_threads * n_threads;
-    double alpha = .7;
-    double Rmax = 0.5;
 
     int n_hitPoints = hitPoints.size();
     printf("%d\n", n_hitPoints);
@@ -239,12 +387,12 @@ Image SPPM::run()
         {
             Light *light = sceneParser->getLight(li);
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
-            for (int th = 0; th < n_threads; th ++)
+            for (int th = 0; th < n_threads; th++)
             {
                 mt19937 mt_rand(round * n_threads + th);
                 for (int photon = 0; photon < num_photons / n_threads; photon++)
                 {
-                    //fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
+                    fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
                     Vector3f lightColor;
                     vector<HitPoint *> tmp;
                     Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
@@ -297,13 +445,13 @@ Image SPPM::run()
         time(&timep);
         p = gmtime(&timep);
         fprintf(stderr, "\n");
-        fprintf(stderr, "%d:", 8 + p->tm_hour); /*获取当前时,这里获取西方的时间,刚好相差八个小时*/
-        fprintf(stderr, "%d:", p->tm_min);      /*获取当前分*/
-        fprintf(stderr, "%d ", p->tm_sec);      /*获取当前秒*/
+        fprintf(stderr, "%d:", 8 + p->tm_hour); 
+        fprintf(stderr, "%d:", p->tm_min);      
+        fprintf(stderr, "%d ", p->tm_sec);      
 
         fprintf(stderr, "round : %d\n", round);
         image.SaveBMP(tmpOut.c_str());
-    }
+    }*/
 
     return image;
 }

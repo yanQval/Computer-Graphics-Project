@@ -4,8 +4,6 @@
 #include <vecmath.h>
 #include <cmath>
 
-//ajskl;dfjl;asjfklasj;lkfjalkdjfklasjflsa
-
 class HitPoint
 {
 public:
@@ -16,6 +14,7 @@ public:
         M = 0;
         tau = Vector3f::ZERO;
     }
+    HitPoint() {}
     void print()
     {
         printf("Pixel : %d %d\n Position : ", x, y);

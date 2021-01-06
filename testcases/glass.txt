@@ -13,7 +13,7 @@ Lights {
         position 105 65 -250
         radius 40
         normal -0.2 -0.13 1
-        color 7000 7000 7000
+        color 10000 10000 10000
     }
 }
 

@@ -135,15 +135,6 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
                 pointer->tau += col;
             }
         }
-        /*HitPoint hitPoint(x, n, r.getDirection(), 0, 0, col);
-        vector<int> indices;
-        indices.clear();
-        kdt->query(x, Rmax, &indices);
-        for (auto index : indices)
-        {
-            hitPoint.x = index;
-            hitPoints->push_back(hitPoint);
-        }*/
 
         float r1 = 2 * M_PI * frand(mt_rand), r2 = frand(mt_rand), r2s = sqrt(r2);
         assert(r2s >= 0);
@@ -228,7 +219,8 @@ Image SPPM::run()
     }
 
     int t_round = 1000;
-    int num_photons = 10000000;
+    int num_photons = 1000000;
+    num_photons = num_photons / n_threads * n_threads;
     float alpha = .7;
     float Rmax = 0.3;
 
@@ -247,15 +239,18 @@ Image SPPM::run()
         {
             Light *light = sceneParser->getLight(li);
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
-            for (int photon = 0; photon < num_photons; photon++)
+            for (int th = 0; th < n_threads; th ++)
             {
-                //fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
-                Vector3f lightColor;
-                vector<HitPoint *> tmp;
-                Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
-                mt19937 mt_rand(round * num_photons + photon);
-                light->generatePhoton(phoRay, lightColor, &mt_rand);
-                photonTracing(phoRay, 0, sceneParser, &tmp, lightColor, &kdtree, &mt_rand);
+                mt19937 mt_rand(round * n_threads + th);
+                for (int photon = 0; photon < num_photons / n_threads; photon++)
+                {
+                    //fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
+                    Vector3f lightColor;
+                    vector<HitPoint *> tmp;
+                    Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
+                    light->generatePhoton(phoRay, lightColor, &mt_rand);
+                    photonTracing(phoRay, 0, sceneParser, &tmp, lightColor, &kdtree, &mt_rand);
+                }
             }
         }
         if (round == 1)
@@ -286,7 +281,7 @@ Image SPPM::run()
         {
             int x = hitPoint.x, y = hitPoint.y;
             Vector3f color = image.GetPixel(x, y);
-            color += hitPoint.col * hitPoint.tau / M_PI / hitPoint.radius / hitPoint.radius / (num_photons * round);
+            color += hitPoint.col * hitPoint.tau / M_PI / hitPoint.radius / hitPoint.radius / num_photons / round;
             image.SetPixel(x, y, color);
         }
         for (int x = 0; x < camera->getWidth(); x++)

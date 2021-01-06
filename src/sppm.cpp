@@ -174,7 +174,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
         //printf("%.5f %.5f %.5f %.5f\n", RP, TP, Re, Tr);
-        if (depth > 20)
+        if (depth > -1)
         {
             if (frand(mt_rand) < P)
                 photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt, mt_rand);
@@ -228,9 +228,9 @@ Image SPPM::run()
     }
 
     int t_round = 1000;
-    int num_photons = 100000;
+    int num_photons = 10000000;
     float alpha = .7;
-    float Rmax = 3;
+    float Rmax = 0.3;
 
     int n_hitPoints = hitPoints.size();
     printf("%d\n", n_hitPoints);
@@ -249,7 +249,7 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
             for (int photon = 0; photon < num_photons; photon++)
             {
-                fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
+                //fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
                 Vector3f lightColor;
                 vector<HitPoint *> tmp;
                 Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);

@@ -3,16 +3,16 @@ PerspectiveCamera {
     direction 0 -0.8 -1
     up 0 1 0
     angle 80
-    width 200
-    height 300
+    width 400
+    height 600
 }
 
 Lights {
     numLights 1
     CircleLight {
-        position 105 120 -250
+        position 105 65 -250
         radius 40
-        normal -0.2 -0.33 1
+        normal -0.2 -0.13 1
         color 7000 7000 7000
     }
 }
@@ -50,7 +50,7 @@ Group {
     MaterialIndex 4
     Transform {
 		Scale  15 15 15 
-		Translate  80 23 35
+		Translate  80 25 35
         TriangleMesh {
             obj_file mesh/glass.obj
         }

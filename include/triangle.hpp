@@ -29,6 +29,7 @@ public:
 		Vector3f O, R, P; float t;
         O = ray.getOrigin();
         R = ray.getDirection();
+		if(fabs(Vector3f::dot(normal, R)) < 1e-5) return false;
         t = (d - Vector3f::dot(normal, O)) / Vector3f::dot(normal, R);
         if (t < tmin) return false;
 		P = ray.pointAtParameter(t);

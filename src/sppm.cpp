@@ -49,7 +49,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
     //float p = max(max(c.x(), c.y()), c.z());
     //printf("%d %.5f\n", depth, p);
-    if (++depth > 40)
+    if (++depth > 50)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -84,7 +84,7 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
         Vector3f tdir = (r.getDirection() * nnt - n * (ddn * nnt + sqrt(cos2t))).normalized();
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
-        if (depth > 40)
+        if (depth > 50)
         {
             if (frand(mt_rand) < P)
                 rayTracing(reflRay, depth, sceneParser, hitPoints, _x, _y, c * RP, mt_rand);
@@ -201,6 +201,7 @@ Image SPPM::run()
     vector<HitPoint> tmphit[camera->getWidth()];
 
     int n_threads = 31;
+    int SPP = 10;
 
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
     for (int x = 0; x < camera->getWidth(); x++)
@@ -210,10 +211,12 @@ Image SPPM::run()
         mt19937 mt_rand(x);
         for (int y = 0; y < camera->getHeight(); y++)
         {
-            float px = x + .5;
-            float py = y + .5;
-            Ray camRay = camera->generateRay(Vector2f(px, py));
-            rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1, 1, 1), &mt_rand);
+            for(int t = 0;t<SPP;t++){
+                float px = x + frand(&mt_rand);
+                float py = y + frand(&mt_rand);
+                Ray camRay = camera->generateRay(Vector2f(px, py));
+                rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1./SPP, 1./SPP, 1./SPP), &mt_rand);
+            }
         }
     }
     for (int x = 0; x < camera->getWidth(); x++)

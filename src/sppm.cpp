@@ -114,7 +114,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     Vector3f n = hit.getNormal().normalized();
 
     float p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
-    if (++depth > 6)
+    if (++depth > 20)
     {
         if (frand(mt_rand) < p && depth < 100)
             c = c * (1 / p);
@@ -174,7 +174,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         float a = nt - nc, b = nt + nc, R0 = a * a / (b * b), tc = 1 - (into ? -ddn : -Vector3f::dot(tdir, n));
         float Re = R0 + (1 - R0) * tc * tc * tc * tc * tc, Tr = 1 - Re, P = .25 + .5 * Re, RP = Re / P, TP = Tr / (1 - P);
         //printf("%.5f %.5f %.5f %.5f\n", RP, TP, Re, Tr);
-        if (depth > 6)
+        if (depth > 20)
         {
             if (frand(mt_rand) < P)
                 photonTracing(reflRay, depth, sceneParser, tmp, c * RP, kdt, mt_rand);
@@ -201,7 +201,6 @@ Image SPPM::run()
     vector<HitPoint> tmphit[camera->getWidth()];
 
     int n_threads = 31;
-    int SPP = 10;
 
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
     for (int x = 0; x < camera->getWidth(); x++)
@@ -211,12 +210,10 @@ Image SPPM::run()
         mt19937 mt_rand(x);
         for (int y = 0; y < camera->getHeight(); y++)
         {
-            for(int t = 0;t<SPP;t++){
-                float px = x + frand(&mt_rand);
-                float py = y + frand(&mt_rand);
-                Ray camRay = camera->generateRay(Vector2f(px, py));
-                rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1./SPP, 1./SPP, 1./SPP), &mt_rand);
-            }
+            float px = x + frand(&mt_rand);
+            float py = y + frand(&mt_rand);
+            Ray camRay = camera->generateRay(Vector2f(px, py));
+            rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1, 1, 1), &mt_rand);
         }
     }
     for (int x = 0; x < camera->getWidth(); x++)
@@ -252,7 +249,7 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
             for (int photon = 0; photon < num_photons; photon++)
             {
-                //fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
+                fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
                 Vector3f lightColor;
                 vector<HitPoint *> tmp;
                 Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);
@@ -302,12 +299,12 @@ Image SPPM::run()
         }
         time_t timep;
         struct tm *p;
-        time (&timep);
-        p=gmtime(&timep);
+        time(&timep);
+        p = gmtime(&timep);
         fprintf(stderr, "\n");
-        fprintf(stderr, "%d:",8+p->tm_hour);/*获取当前时,这里获取西方的时间,刚好相差八个小时*/
-        fprintf(stderr, "%d:",p->tm_min); /*获取当前分*/
-        fprintf(stderr, "%d ",p->tm_sec); /*获取当前秒*/
+        fprintf(stderr, "%d:", 8 + p->tm_hour); /*获取当前时,这里获取西方的时间,刚好相差八个小时*/
+        fprintf(stderr, "%d:", p->tm_min);      /*获取当前分*/
+        fprintf(stderr, "%d ", p->tm_sec);      /*获取当前秒*/
 
         fprintf(stderr, "round : %d\n", round);
         image.SaveBMP(tmpOut.c_str());

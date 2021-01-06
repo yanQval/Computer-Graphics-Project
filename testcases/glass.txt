@@ -1,17 +1,19 @@
 PerspectiveCamera {
-    center 50 44 210
-    direction 0 0 -1
+    center 42 50 80
+    direction 0 -0.8 -1
     up 0 1 0
-    angle 45
-    width 1920
-    height 1080
+    angle 80
+    width 200
+    height 300
 }
 
 Lights {
     numLights 1
-    PointLight {
-        position 90 20 42
-        color 8000 8000 8000
+    CircleLight {
+        position 105 120 -250
+        radius 40
+        normal -0.2 -0.33 1
+        color 7000 7000 7000
     }
 }
 
@@ -38,37 +40,17 @@ Materials {
 }
 
 Group {
-    numObjects 6
-    MaterialIndex 0
-    Plane {
-        normal 1 0 0
-        offset 0
-    }
-    
-    MaterialIndex 1
-    Plane {
-        normal -1 0 0
-        offset -99
-    }
+    numObjects 2
 
     MaterialIndex 2
-    Plane {
-        normal 0 0 1
-        offset 0
-    }
     Plane {
         normal 0 1 0
         offset 0
     }
-    Plane {
-        normal 0 -1 0
-        offset -81.6
-    }
-
     MaterialIndex 4
     Transform {
 		Scale  15 15 15 
-		Translate  105 23 70
+		Translate  80 23 35
         TriangleMesh {
             obj_file mesh/glass.obj
         }

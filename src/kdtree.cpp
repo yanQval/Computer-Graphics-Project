@@ -73,3 +73,19 @@ void KDTree::query(Vector3f q_pos, vector<HitPoint *> *result)
     result->clear();
     query(root, q_pos, result);
 }
+
+void KDTree::clear_tree(TreeNode *x)
+{
+    if (x == NULL)
+        return;
+    clear_tree(x->lc);
+    clear_tree(x->rc);
+    delete x;
+}
+
+KDTree::~KDTree()
+{
+    data.clear();
+    clear_tree(root);
+    root = NULL;
+}

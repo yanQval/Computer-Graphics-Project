@@ -22,11 +22,13 @@ class KDTree
 public:
     KDTree() = delete;
     KDTree(vector<HitPoint> *hitPoints);
+    ~KDTree();
     void query(Vector3f pos, vector<HitPoint *> *result);
 
 private:
     void build(TreeNode *&x, int l, int r, int depth);
     void query(TreeNode *x, Vector3f q_pos, vector<HitPoint *> *result);
+    void clear_tree(TreeNode *x);
     vector<HitPoint *> data;
     TreeNode *root;
 };

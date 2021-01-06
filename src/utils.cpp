@@ -28,17 +28,17 @@ Vector3f uniformSample(mt19937 *rd)
         if (d.length() <= 1)
             return d;
     }
-    /*float theta, cosPhi, sinPhi;
-    Vector3f v;
-    do
+}
+
+Vector3f semi_uniformSample(Vector3f n, mt19937 *rd)
+{
+    return n;
+    while (true)
     {
-        theta = 2 * M_PI * frand(rd);
-        cosPhi = 2 * frand(rd) - 1;
-        sinPhi = sqrt(1 - cosPhi * cosPhi);
-        v = Vector3f(cos(theta) * sinPhi, sin(theta) * sinPhi, cosPhi);
-    } while (0);
-    //while (Vector3f::dot(n, v) <= 0);
-    return Vector3f(v.z(), v.x(), v.y());*/
+        Vector3f d((frand(rd) - 0.5) * 2, (frand(rd) - 0.5) * 2, (frand(rd) - 0.5) * 2);
+        if (d.length() <= 1 && Vector3f::dot(n, d) > 0)
+            return d;
+    }
 }
 
 float dis(Vector3f a, Vector3f b)

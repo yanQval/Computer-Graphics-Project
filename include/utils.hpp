@@ -13,6 +13,7 @@ float clamp(float x);
 int toInt(float x);
 
 Vector3f uniformSample(mt19937 *rd);
+Vector3f semi_uniformSample(Vector3f n, mt19937 *rd);
 
 float dis(Vector3f a, Vector3f b);
 

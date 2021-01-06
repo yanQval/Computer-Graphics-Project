@@ -201,6 +201,10 @@ void SceneParser::parseLights()
         {
             lights[count] = parsePointLight();
         }
+        else if (strcmp(token, "CircleLight") == 0)
+        {
+            lights[count] = parseCircleLight();
+        }
         else
         {
             printf("Unknown token in parseLight: '%s'\n", token);
@@ -242,6 +246,28 @@ Light *SceneParser::parsePointLight()
     getToken(token);
     assert(!strcmp(token, "}"));
     return new PointLight(position, color);
+}
+
+Light *SceneParser::parseCircleLight()
+{
+    char token[MAX_PARSER_TOKEN_LENGTH];
+    getToken(token);
+    assert(!strcmp(token, "{"));
+    getToken(token);
+    assert(!strcmp(token, "position"));
+    Vector3f position = readVector3f();
+    getToken(token);
+    assert(!strcmp(token, "radius"));
+    float radius = readFloat();
+    getToken(token);
+    assert(!strcmp(token, "normal"));
+    Vector3f normal = readVector3f();
+    getToken(token);
+    assert(!strcmp(token, "color"));
+    Vector3f color = readVector3f();
+    getToken(token);
+    assert(!strcmp(token, "}"));
+    return new CircleLight(position, radius, normal, color);
 }
 // ====================================================================
 // ====================================================================

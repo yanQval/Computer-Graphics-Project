@@ -26,6 +26,8 @@ void Mesh::build_mesh(TreeNode *&x, int l, int r, int depth, vector<Info> &t)
     nth_element(t.begin() + l, t.begin() + m, t.begin() + r + 1, cmp_mesh);
     x = new TreeNode;
     x->data = t[m].data;
+    if (hasVN)
+        x->vnID = t[m].vnID;
     x->normal = t[m].normal;
     x->rangeMin = t[m].rangeMin;
     x->rangeMax = t[m].rangeMax;
@@ -65,7 +67,13 @@ bool Mesh::query_mesh(TreeNode *x, const Ray &r, Hit &h, double tmin)
     if (t_min > t_max)
         return false;
     Triangle triangle(v[x->data[0]],
-                      v[x->data[1]], v[x->data[2]], material);
+                      v[x->data[1]], v[x->data[2]], hasVN, material);
+    if (hasVN)
+    {
+        triangle.vertices_normal[0] = vn[x->vnID[0]];
+        triangle.vertices_normal[1] = vn[x->vnID[1]];
+        triangle.vertices_normal[2] = vn[x->vnID[2]];
+    }
     triangle.normal = x->normal;
     bool result = triangle.intersect(r, h, tmin);
     result |= query_mesh(x->lc, r, h, tmin);
@@ -86,7 +94,13 @@ bool Mesh::intersect(const Ray &r, Hit &h, double tmin)
     {
         TriangleIndex &triIndex = t[triId];
         Triangle triangle(v[triIndex[0]],
-                          v[triIndex[1]], v[triIndex[2]], material);
+                          v[triIndex[1]], v[triIndex[2]], hasVN, material);
+        if (hasVN)
+        {
+            triangle.vertices_normal[0] = vn[triIndex[0]];
+            triangle.vertices_normal[1] = vn[triIndex[1]];
+            triangle.vertices_normal[2] = vn[triIndex[2]];
+        }
         triangle.normal = n[triId];
         result |= triangle.intersect(r, h, tmin);
     }
@@ -108,9 +122,11 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material)
     }
     std::string line;
     std::string vTok("v");
+    std::string vnTok("vn");
     std::string fTok("f");
     std::string texTok("vt");
     char bslash = '/', space = ' ';
+    string dslash = "//";
     std::string tok;
     int texID;
     while (true)
@@ -136,9 +152,31 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material)
             ss >> vec[0] >> vec[1] >> vec[2];
             v.push_back(vec);
         }
+        else if (tok == vnTok)
+        {
+            hasVN = true;
+            Vector3f vec;
+            ss >> vec[0] >> vec[1] >> vec[2];
+            vn.push_back(vec);
+        }
         else if (tok == fTok)
         {
-            if (line.find(bslash) != std::string::npos)
+            if (line.find(dslash) != std::string::npos)
+            {
+                std::replace(line.begin(), line.end(), bslash, space);
+                std::stringstream facess(line);
+                TriangleIndex trig, nor;
+                facess >> tok;
+                for (int ii = 0; ii < 3; ii++)
+                {
+                    facess >> trig[ii] >> nor[ii];
+                    trig[ii]--;
+                    nor[ii]--;
+                }
+                t.push_back(trig);
+                tn.push_back(nor);
+            }
+            else if (line.find(bslash) != std::string::npos)
             {
                 std::replace(line.begin(), line.end(), bslash, space);
                 std::stringstream facess(line);
@@ -169,6 +207,13 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material)
             ss >> texcoord[1];
         }
     }
+
+    printf("has vn %d %d %d\n", hasVN, (int)v.size(), (int)vn.size());
+    if (hasVN)
+    {
+        assert(v.size() == vn.size());
+    }
+
     computeNormal();
 
     int _n = t.size();
@@ -179,6 +224,8 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material)
         TriangleIndex x = t[i];
         Info info;
         info.data = x;
+        if (hasVN)
+            info.vnID = tn[i];
         info.rangeMin = min(min(v[x[0]], v[x[1]]), v[x[2]]);
         info.rangeMax = max(max(v[x[0]], v[x[1]]), v[x[2]]);
         info.normal = n[i];

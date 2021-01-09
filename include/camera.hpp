@@ -2,13 +2,18 @@
 #define CAMERA_H
 
 #include "ray.hpp"
+#include "utils.hpp"
 #include <vecmath.h>
 #include <cmath>
+#include <random>
 
+using namespace std;
 
-class Camera {
+class Camera
+{
 public:
-    Camera(const Vector3f &center, const Vector3f &direction, const Vector3f &up, int imgW, int imgH) {
+    Camera(const Vector3f &center, const Vector3f &direction, const Vector3f &up, int imgW, int imgH)
+    {
         this->center = center;
         this->direction = direction.normalized();
         this->horizontal = Vector3f::cross(this->direction, up);
@@ -18,7 +23,7 @@ public:
     }
 
     // Generate rays for each screen-space coordinate
-    virtual Ray generateRay(const Vector2f &point) = 0;
+    virtual Ray generateRay(const Vector2f &point, mt19937 *mt_rand) = 0;
     virtual ~Camera() = default;
 
     int getWidth() const { return width; }
@@ -37,27 +42,51 @@ protected:
 
 // TODO: Implement Perspective camera
 // You can add new functions or variables whenever needed.
-class PerspectiveCamera : public Camera {
+class PerspectiveCamera : public Camera
+{
 
 public:
     PerspectiveCamera(const Vector3f &_center, const Vector3f &_direction,
-            const Vector3f &_up, int _imgW, int _imgH, double _angle) : Camera(_center, _direction, _up, _imgW, _imgH) {
+                      const Vector3f &_up, int _imgW, int _imgH, double _angle, bool uf, Vector3f fp) : Camera(_center, _direction, _up, _imgW, _imgH)
+    {
         angle = _angle;
         distance = height / 2 / tan(angle / 2);
+        useFocusPoint = uf;
+        focusPoint = fp;
+        focusLength = (fp - _center).length();
+        radius = focusLength * 0.020;
         //printf("%d %d %.4lf\n", _imgW, _imgH, distance);
         // angle is in radian.
     }
 
-    Ray generateRay(const Vector2f &point) override {
+    Ray generateRay(const Vector2f &point, mt19937 *mt_rand) override
+    {
         Vector3f O, Dir;
         O = Vector3f(0, 0, 0);
         Dir = Vector3f(point[0] - width / 2, height / 2 - point[1], distance).normalized();
         Matrix3f trans(horizontal, -up, direction, true);
-        Dir = trans * Dir;
-        return Ray(center, Dir);
+        //puts("!!!");
+        //printf("%.5lf\n", Dir.length());
+        Dir = (trans * Dir).normalized();
+        //printf("%.5lf\n", Dir.length());
+        if (useFocusPoint)
+        {
+            Dir = Dir / Vector3f::dot(Dir, direction);
+            Vector3f d = semi_uniformSample(direction, mt_rand).normalized() * radius;
+            return Ray(center + d, (Dir * focusLength - d).normalized());
+        }
+        else
+        {
+            return Ray(center, Dir);
+        }
     }
     double angle;
     double distance;
+
+    bool useFocusPoint;
+    Vector3f focusPoint;
+    double focusLength;
+    double radius;
 };
 
 #endif //CAMERA_H

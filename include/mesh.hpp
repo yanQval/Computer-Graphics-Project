@@ -29,12 +29,14 @@ public:
     struct Info
     {
         Vector3f rangeMin, rangeMax;
-        TriangleIndex data;
+        TriangleIndex data, vnID;
         Vector3f normal;
     };
 
     std::vector<Vector3f> v;
-    std::vector<TriangleIndex> t;
+    std::vector<Vector3f> vn;
+    bool hasVN = false;
+    std::vector<TriangleIndex> t, tn;
     std::vector<Vector3f> n;
     bool intersect(const Ray &r, Hit &h, double tmin) override;
 
@@ -46,7 +48,7 @@ private:
     {
         TreeNode *lc, *rc;
         Vector3f rangeMax, rangeMin;
-        TriangleIndex data;
+        TriangleIndex data, vnID;
         Vector3f normal;
     };
     TreeNode *root;

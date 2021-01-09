@@ -113,6 +113,8 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     Vector3f c = col * hit.getMaterial()->getColor();
     Vector3f n = hit.getNormal().normalized();
 
+    //if(fabs(x[0] - 69) < 1 && fabs(x[1] - 0) < 1 && fabs(x[2] - 101) < 1)puts("!!!");
+
     double p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
     if (++depth > 20)
     {
@@ -136,6 +138,13 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
             }
         }
 
+        /*Vector3f w = n;
+        Vector3f u = Vector3f::cross(fabs(w[0]) > 0.1 ? Vector3f(0, 1, 0) : Vector3f(1, 0, 0), w).normalized();
+        Vector3f v = Vector3f::cross(w, u);
+        double phi = frand(mt_rand) * M_PI * 2, sinTheta2 = frand(mt_rand), sinTheta = sqrt(sinTheta2), cosTheta = sqrt(max((double)0.0, (double)1.0 - sinTheta2));
+        Ray reflectedRay(r.getDirection() * hit.getT() + r.getOrigin(),
+         u * cos(phi) * cosTheta + v * sin(phi) * cosTheta + w * sinTheta);
+        photonTracing(reflectedRay, depth, sceneParser, tmp, c, kdt, mt_rand);*/
         double r1 = 2 * M_PI * frand(mt_rand), r2 = frand(mt_rand), r2s = sqrt(r2);
         assert(r2s >= 0);
 
@@ -180,16 +189,16 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     }
 }
 
-HitPoint pixelData[5000][5000];
+HitPoint pixelData[1920][1300];
 
 Image SPPM::run()
 {
     int n_threads = 30;
-    int t_round = 10000;
-    int num_photons = 10000;
+    int t_round = 200000;
+    int num_photons = 500000;
     num_photons = num_photons / n_threads * n_threads;
-    double alpha = .7;
-    double Rmax = 0.5;
+    double alpha = .8;
+    double Rmax = .3;
 
     Camera *camera = sceneParser->getCamera();
     printf("%d %d\n", camera->getWidth(), camera->getHeight());
@@ -216,14 +225,14 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
         for (int x = 0; x < camera->getWidth(); x++)
         {
-            fprintf(stderr, "\rRay Rendering  %5.2f%%", 100. * x / (camera->getWidth() - 1));
+            //fprintf(stderr, "\rRay Rendering  %5.2f%%", 100. * x / (camera->getWidth() - 1));
             tmphit[x].clear();
-            mt19937 mt_rand(round * camera->getWidth() + x);
+            mt19937 mt_rand(round * camera->getWidth() + x + 1000000);
             for (int y = 0; y < camera->getHeight(); y++)
             {
                 double px = x + frand(&mt_rand);
                 double py = y + frand(&mt_rand);
-                Ray camRay = camera->generateRay(Vector2f(px, py));
+                Ray camRay = camera->generateRay(Vector2f(px, py), &mt_rand);
                 rayTracing(camRay, 0, sceneParser, &tmphit[x], x, y, Vector3f(1, 1, 1), &mt_rand);
             }
         }
@@ -238,7 +247,12 @@ Image SPPM::run()
             }
         }
 
+        //image.SaveBMP(tmpOut.c_str());
+
         int n_hitPoints = hitPoints.size();
+        //printf("%.5lf \n", pixelData[0][0].radius);
+        //printf("%.5lf \n", pixelData[0][0].N);
+        //pixelData[0][0].tau.print();
         printf("%d\n", n_hitPoints);
 
         for (int i = 0; i < n_hitPoints; i++)
@@ -254,10 +268,10 @@ Image SPPM::run()
 #pragma omp parallel for schedule(dynamic, 1) num_threads(n_threads)
             for (int th = 0; th < n_threads; th++)
             {
-                mt19937 mt_rand(round * n_threads + th);
+                mt19937 mt_rand(round * n_threads + th + 1000000);
                 for (int photon = 0; photon < num_photons / n_threads; photon++)
                 {
-                    fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
+                    //fprintf(stderr, "\rRendering  %5.2f%%", 100. * photon / (num_photons - 1));
                     Vector3f lightColor;
                     vector<HitPoint *> tmp;
                     Ray phoRay(Vector3f::ZERO, Vector3f::ZERO);

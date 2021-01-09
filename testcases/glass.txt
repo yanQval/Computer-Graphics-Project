@@ -1,19 +1,25 @@
 PerspectiveCamera {
-    center 42 50 80
-    direction 0 -0.8 -1
+    center 50 44 210
+    direction 0 -0.55 -1
     up 0 1 0
-    angle 80
-    width 400
-    height 600
+    angle 45
+    width 1600
+    height 1200
 }
 
 Lights {
-    numLights 1
+    numLights 2
     CircleLight {
-        position 105 65 -250
-        radius 40
-        normal -0.2 -0.13 1
-        color 10000 10000 10000
+        position 112 35 10
+        radius 30
+        normal -0.6 -0.3 1
+        color 6000 4000 5000
+    }
+    CircleLight {
+        position -12 35 10
+        radius 30
+        normal 0.6 -0.3 1
+        color 6000 4000 5000
     }
 }
 
@@ -23,7 +29,7 @@ Materials {
         color 0.75 0.25 0.25
     }
     Material {
-        color 0.25 0.25 0.75
+        color 0.5 0.3 0.47
     }
     Material {
         color 0.75 0.75 0.75
@@ -32,7 +38,7 @@ Materials {
         color 0.999 0.999 0.999 
         type SPEC
     }
-    Material { 
+    Material {
         color 0.999 0.999 0.999 
         type REFL
         reflectRate 1.5
@@ -41,18 +47,22 @@ Materials {
 
 Group {
     numObjects 2
+    MaterialIndex 0
 
-    MaterialIndex 2
+    MaterialIndex 1
     Plane {
         normal 0 1 0
         offset 0
     }
+
     MaterialIndex 4
     Transform {
-		Scale  15 15 15 
-		Translate  80 25 35
+        XRotate  90 
+		Scale  13 13 13
+		Translate  100 -20 90
         TriangleMesh {
-            obj_file mesh/glass.obj
+            obj_file mesh/glass1.obj
         }
     }
+
 }

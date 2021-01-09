@@ -30,6 +30,7 @@ SceneParser::SceneParser(const char *filename)
     materials = nullptr;
     current_material = nullptr;
 
+
     // parse the file
     assert(filename != nullptr);
     const char *ext = &filename[strlen(filename) - 4];
@@ -145,8 +146,18 @@ void SceneParser::parsePerspectiveCamera()
     assert(!strcmp(token, "height"));
     int height = readInt();
     getToken(token);
+    assert(!strcmp(token, "focusPoint"));
+    bool useFocusPoint = false;
+    Vector3f focusPoint = Vector3f::ZERO;
+    getToken(token);
+    if (!strcmp(token, "True"))
+    {
+        useFocusPoint = true;
+        focusPoint = readVector3f();
+    }
+    getToken(token);
     assert(!strcmp(token, "}"));
-    camera = new PerspectiveCamera(center, direction, up, width, height, angle_radians);
+    camera = new PerspectiveCamera(center, direction, up, width, height, angle_radians, useFocusPoint, focusPoint);
 }
 
 void SceneParser::parseBackground()
@@ -496,7 +507,7 @@ Triangle *SceneParser::parseTriangle()
     getToken(token);
     assert(!strcmp(token, "}"));
     assert(current_material != nullptr);
-    return new Triangle(v0, v1, v2, current_material);
+    return new Triangle(v0, v1, v2, false, current_material);
 }
 
 Mesh *SceneParser::parseTriangleMesh()

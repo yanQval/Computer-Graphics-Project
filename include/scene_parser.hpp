@@ -62,6 +62,7 @@ public:
         return group;
     }
 
+
 private:
     void parseFile();
     void parsePerspectiveCamera();

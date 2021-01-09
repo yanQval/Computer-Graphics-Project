@@ -4,20 +4,46 @@ nohup: ignoring input
 Argument 1 is: testcases/glass.txt
 Argument 2 is: output/glass.bmp
 Argument 3 is: 1000
-Ray Rendering   0.00%Ray Rendering   0.50%Ray Rendering   0.75%Ray Rendering   2.51%Ray Rendering   6.52%Ray Rendering   4.26%Ray Rendering   4.76%Ray Rendering   5.26%Ray Rendering   4.01%Ray Rendering   3.76%Ray Rendering   1.00%Ray Rendering   3.26%Ray Rendering   1.75%Ray Rendering   0.25%Ray Rendering   1.50%Ray Rendering   2.26%Ray Rendering   2.76%Ray Rendering   7.52%Ray Rendering   7.27%Ray Rendering   3.01%Ray Rendering   5.51%Ray Rendering   1.25%Ray Rendering   5.76%Ray Rendering   5.01%Ray Rendering   6.02%Ray Rendering   4.51%Ray Rendering   8.52%Ray Rendering   9.02%Ray Rendering   6.77%Ray Rendering   6.27%Ray Rendering   3.51%Ray Rendering   7.77%Ray Rendering   8.02%Ray Rendering   8.27%Ray Rendering   8.77%Ray Rendering   7.02%Ray Rendering   9.27%Ray Rendering   2.01%Ray Rendering   9.52%Ray Rendering   9.77%Ray Rendering  10.03%Ray Rendering  11.03%Ray Rendering  10.53%Ray Rendering  10.78%Ray Rendering  10.28%Ray Rendering  11.53%Ray Rendering  11.28%Ray Rendering  11.78%Ray Rendering  12.03%Ray Rendering  12.28%Ray Rendering  12.53%Ray Rendering  12.78%Ray Rendering  13.03%Ray Rendering  13.28%Ray Rendering  13.53%Ray Rendering  13.78%Ray Rendering  14.04%Ray Rendering  14.29%Ray Rendering  14.79%Ray Rendering  15.04%Ray Rendering  15.29%Ray Rendering  15.54%Ray Rendering  16.54%Ray Rendering  15.79%Ray Rendering  17.04%Ray Rendering  16.29%Ray Rendering  16.79%Ray Rendering  16.04%Ray Rendering  17.29%Ray Rendering  14.54%Ray Rendering  17.54%Ray Rendering  17.79%Ray Rendering  18.05%Ray Rendering  18.30%Ray Rendering  18.55%Ray Rendering  18.80%Ray Rendering  19.05%Ray Rendering  19.30%Ray Rendering  19.55%Ray Rendering  20.30%Ray Rendering  19.80%Ray Rendering  21.80%Ray Rendering  22.06%Ray Rendering  23.06%Ray Rendering  21.05%Ray Rendering  21.30%Ray Rendering  24.56%Ray Rendering  25.06%Ray Rendering  22.31%Ray Rendering  20.80%Ray Rendering  22.56%Ray Rendering  22.81%Ray Rendering  23.31%Ray Rendering  23.56%Ray Rendering  23.81%Ray Rendering  24.06%Ray Rendering  21.55%Ray Rendering  24.31%Ray Rendering  24.81%Ray Rendering  20.05%Ray Rendering  20.55%Ray Rendering  26.07%Ray Rendering  25.56%Ray Rendering  25.81%Ray Rendering  26.32%Ray Rendering  26.57%Ray Rendering  26.82%Ray Rendering  27.07%Ray Rendering  27.32%Ray Rendering  25.31%Ray Rendering  27.57%Ray Rendering  27.82%Ray Rendering  28.07%Ray Rendering  28.32%Ray Rendering  28.57%Ray Rendering  29.32%Ray Rendering  29.82%Ray Rendering  29.57%Ray Rendering  30.58%Ray Rendering  31.33%Ray Rendering  30.08%Ray Rendering  32.08%Ray Rendering  30.33%Ray Rendering  32.83%Ray Rendering  33.58%Ray Rendering  34.34%Ray Rendering  29.07%Ray Rendering  34.59%Ray Rendering  32.58%Ray Rendering  30.83%Ray Rendering  31.08%Ray Rendering  33.08%Ray Rendering  33.33%Ray Rendering  33.83%Ray Rendering  34.09%Ray Rendering  31.58%Ray Rendering  31.83%Ray Rendering  32.33%Ray Rendering  28.82%Ray Rendering  34.84%Ray Rendering  35.09%Ray Rendering  35.34%Ray Rendering  35.59%Ray Rendering  35.84%Ray Rendering  36.09%Ray Rendering  36.34%Ray Rendering  36.59%Ray Rendering  36.84%Ray Rendering  37.09%Ray Rendering  37.34%Ray Rendering  37.59%Ray Rendering  37.84%Ray Rendering  38.60%Ray Rendering  39.60%Ray Rendering  38.85%Ray Rendering  39.10%Ray Rendering  39.85%Ray Rendering  39.35%Ray Rendering  41.35%Ray Rendering  38.10%Ray Rendering  40.10%Ray Rendering  40.35%Ray Rendering  40.60%Ray Rendering  40.85%Ray Rendering  41.10%Ray Rendering  38.35%Ray Rendering  42.11%Ray Rendering  42.36%Ray Rendering  42.61%Ray Rendering  41.60%Ray Rendering  42.86%Ray Rendering  41.85%Ray Rendering  43.11%Ray Rendering  43.36%Ray Rendering  43.61%Ray Rendering  43.86%Ray Rendering  44.11%Ray Rendering  44.36%Ray Rendering  44.61%Ray Rendering  44.86%Ray Rendering  45.11%Ray Rendering  45.36%Ray Rendering  45.61%Ray Rendering  45.86%Ray Rendering  46.12%Ray Rendering  46.37%Ray Rendering  46.62%Ray Rendering  46.87%Ray Rendering  47.12%Ray Rendering  47.37%Ray Rendering  47.62%Ray Rendering  47.87%Ray Rendering  48.12%Ray Rendering  48.37%Ray Rendering  48.62%Ray Rendering  48.87%Ray Rendering  49.12%Ray Rendering  49.37%Ray Rendering  49.62%Ray Rendering  49.87%Ray Rendering  50.13%Ray Rendering  50.38%Ray Rendering  50.63%Ray Rendering  50.88%Ray Rendering  51.13%Ray Rendering  51.38%Ray Rendering  51.63%Ray Rendering  51.88%Ray Rendering  52.13%Ray Rendering  52.38%Ray Rendering  52.63%Ray Rendering  52.88%Ray Rendering  53.13%Ray Rendering  53.38%Ray Rendering  53.63%Ray Rendering  53.88%Ray Rendering  54.14%Ray Rendering  54.39%Ray Rendering  54.64%Ray Rendering  54.89%Ray Rendering  55.14%Ray Rendering  55.39%Ray Rendering  55.64%Ray Rendering  55.89%Ray Rendering  56.14%Ray Rendering  56.39%Ray Rendering  56.64%Ray Rendering  56.89%Ray Rendering  57.14%Ray Rendering  57.39%Ray Rendering  57.64%Ray Rendering  57.89%Ray Rendering  58.15%Ray Rendering  58.40%Ray Rendering  58.65%Ray Rendering  58.90%Ray Rendering  59.15%Ray Rendering  59.40%Ray Rendering  59.65%Ray Rendering  59.90%Ray Rendering  60.15%Ray Rendering  60.40%Ray Rendering  60.65%Ray Rendering  60.90%Ray Rendering  61.15%Ray Rendering  61.40%Ray Rendering  61.65%Ray Rendering  61.90%Ray Rendering  62.16%Ray Rendering  62.41%Ray Rendering  62.66%Ray Rendering  62.91%Ray Rendering  63.16%Ray Rendering  63.41%Ray Rendering  63.66%Ray Rendering  63.91%Ray Rendering  64.16%Ray Rendering  64.41%Ray Rendering  64.66%Ray Rendering  64.91%Ray Rendering  65.16%Ray Rendering  65.41%Ray Rendering  65.66%Ray Rendering  65.91%Ray Rendering  66.17%Ray Rendering  66.42%Ray Rendering  66.67%Ray Rendering  66.92%Ray Rendering  67.17%Ray Rendering  67.42%Ray Rendering  67.67%Ray Rendering  67.92%Ray Rendering  68.17%Ray Rendering  68.42%Ray Rendering  68.67%Ray Rendering  68.92%Ray Rendering  69.17%Ray Rendering  69.42%Ray Rendering  69.67%Ray Rendering  69.92%Ray Rendering  70.18%Ray Rendering  70.43%Ray Rendering  70.68%Ray Rendering  70.93%Ray Rendering  71.18%Ray Rendering  71.43%Ray Rendering  71.68%Ray Rendering  71.93%Ray Rendering  72.18%Ray Rendering  72.43%Ray Rendering  72.68%Ray Rendering  72.93%Ray Rendering  73.18%Ray Rendering  73.43%Ray Rendering  73.68%Ray Rendering  73.93%Ray Rendering  74.19%Ray Rendering  74.44%Ray Rendering  74.69%Ray Rendering  74.94%Ray Rendering  75.19%Ray Rendering  75.44%Ray Rendering  75.69%Ray Rendering  75.94%Ray Rendering  76.19%Ray Rendering  76.44%Ray Rendering  76.69%Ray Rendering  76.94%Ray Rendering  77.19%Ray Rendering  77.44%Ray Rendering  77.69%Ray Rendering  77.94%Ray Rendering  78.20%Ray Rendering  78.45%Ray Rendering  78.70%Ray Rendering  78.95%Ray Rendering  79.20%Ray Rendering  79.45%Ray Rendering  79.70%Ray Rendering  79.95%Ray Rendering  80.20%Ray Rendering  80.45%Ray Rendering  80.70%Ray Rendering  80.95%Ray Rendering  81.20%Ray Rendering  81.45%Ray Rendering  81.70%Ray Rendering  81.95%Ray Rendering  82.21%Ray Rendering  82.46%Ray Rendering  82.71%Ray Rendering  82.96%Ray Rendering  83.21%Ray Rendering  83.46%Ray Rendering  83.71%Ray Rendering  83.96%Ray Rendering  84.21%Ray Rendering  84.46%Ray Rendering  84.71%Ray Rendering  84.96%Ray Rendering  85.21%Ray Rendering  85.46%Ray Rendering  85.71%Ray Rendering  85.96%Ray Rendering  86.22%Ray Rendering  86.47%Ray Rendering  86.72%Ray Rendering  86.97%Ray Rendering  87.22%Ray Rendering  87.47%Ray Rendering  87.72%Ray Rendering  87.97%Ray Rendering  88.22%Ray Rendering  88.47%Ray Rendering  88.72%Ray Rendering  88.97%Ray Rendering  89.22%Ray Rendering  89.47%Ray Rendering  89.72%Ray Rendering  89.97%Ray Rendering  90.23%Ray Rendering  90.48%Ray Rendering  90.73%Ray Rendering  90.98%Ray Rendering  91.23%Ray Rendering  91.48%Ray Rendering  91.73%Ray Rendering  91.98%Ray Rendering  92.23%Ray Rendering  92.48%Ray Rendering  92.73%Ray Rendering  92.98%Ray Rendering  93.23%Ray Rendering  93.48%Ray Rendering  93.73%Ray Rendering  93.98%Ray Rendering  94.24%Ray Rendering  94.49%Ray Rendering  94.74%Ray Rendering  94.99%Ray Rendering  95.24%Ray Rendering  95.49%Ray Rendering  95.74%Ray Rendering  95.99%Ray Rendering  96.24%Ray Rendering  96.49%Ray Rendering  96.74%Ray Rendering  96.99%Ray Rendering  97.24%Ray Rendering  97.49%Ray Rendering  97.74%Ray Rendering  97.99%Ray Rendering  98.25%Ray Rendering  98.50%Ray Rendering  98.75%Ray Rendering  99.00%Ray Rendering  99.25%Ray Rendering  99.50%Ray Rendering  99.75%Ray Rendering  100.00%
-19:28:43 round : 1
 
-19:28:57 round : 2
+10:4:13 round : 1
 
-19:29:10 round : 3
+10:4:16 round : 2
 
-19:29:22 round : 4
+10:4:18 round : 3
 
-19:29:35 round : 5
+10:4:20 round : 4
 
-19:29:47 round : 6
+10:4:22 round : 5
 
-19:29:59 round : 7
+10:4:24 round : 6
 
-19:30:11 round : 8
-glass.sh: line 19:  2351 Killed                  bin/PA1 testcases/glass.txt output/glass.bmp 1000
+10:4:27 round : 7
+
+10:4:29 round : 8
+
+10:4:31 round : 9
+
+10:4:33 round : 10
+
+10:4:35 round : 11
+
+10:4:38 round : 12
+
+10:4:40 round : 13
+
+10:4:42 round : 14
+
+10:4:44 round : 15
+
+10:4:46 round : 16
+
+10:4:48 round : 17
+
+10:4:51 round : 18
+
+10:4:53 round : 19
+
+10:4:55 round : 20
+
+10:4:57 round : 21
+glass.sh: line 19: 28757 Killed                  bin/PA1 testcases/glass.txt output/glass.bmp 1000

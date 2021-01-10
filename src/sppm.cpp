@@ -189,7 +189,7 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
     }
 }
 
-HitPoint pixelData[1920][1300];
+HitPoint pixelData[2560][1440];
 
 Image SPPM::run()
 {

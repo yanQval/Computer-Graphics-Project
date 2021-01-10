@@ -54,7 +54,7 @@ public:
         useFocusPoint = uf;
         focusPoint = fp;
         focusLength = (fp - _center).length();
-        radius = focusLength * 0.020;
+        radius = 3;
         //printf("%d %d %.4lf\n", _imgW, _imgH, distance);
         // angle is in radian.
     }

@@ -6,6 +6,7 @@
 
 #include "ray.hpp"
 #include "hit.hpp"
+#include "image.hpp"
 #include <iostream>
 
 typedef int MaterialType;
@@ -18,15 +19,34 @@ typedef int MaterialType;
 class Material
 {
 public:
-    explicit Material(const Vector3f &col, const MaterialType tp, double re = 0, const Vector3f &e = Vector3f::ZERO) : color(col), type(tp), reflRate(re), emi(e)
+    explicit Material(const Vector3f &col, char *filename, const MaterialType tp, double re = 0, const Vector3f &e = Vector3f::ZERO) : color(col), type(tp), reflRate(re), emi(e)
     {
+        if (filename[0] != 0)
+        {
+            useTexture = true;
+            printf("%s\n", filename);
+            texture = Image::LoadPPM(filename);
+        }
     }
 
     virtual ~Material() = default;
 
-    Vector3f getColor()
+    Vector3f getColor(Vector2f pos)
     {
-        return color;
+        if (useTexture)
+        {
+            double x = pos.x() - floor(pos.x());
+            double y = pos.y() - floor(pos.y());
+            //pos.print();
+            //printf("%.5lf %.5lf\n", x, y);
+            //printf("%d %d\n", int(x * texture->Width()), int(y * texture->Height()));
+            //texture->GetPixel(int(x * texture->Width()), int(y * texture->Height())).print();
+            return texture->GetPixel(int(x * texture->Width()), int(y * texture->Height()));
+        }
+        else
+        {
+            return color;
+        }
     }
 
     Vector3f getEmission()
@@ -44,35 +64,14 @@ public:
         return reflRate;
     }
 
-    /*virtual Vector3f getDiffuseColor() const
-    {
-        return diffuseColor;
-    }*/
-
-    /*Vector3f Shade(const Ray &ray, const Hit &hit,
-                   const Vector3f &dirToLight, const Vector3f &lightColor)
-    {
-        Vector3f shaded = Vector3f::ZERO;
-        double t1 = Vector3f::dot(dirToLight, hit.getNormal());
-        if (t1 < 0)
-            t1 = 0;
-        Vector3f R;
-        R = 2 * t1 * hit.getNormal() - dirToLight;
-        double t2 = Vector3f::dot(-ray.getDirection(), R);
-        if (t2 < 0)
-            t2 = 0;
-        t2 = pow(t2, shininess);
-        Vector3f t;
-        t = t1 * diffuseColor + t2 * specularColor;
-        shaded = lightColor * t;
-        return shaded;
-    }*/
-
 protected:
     Vector3f color;
     MaterialType type;
     double reflRate;
     Vector3f emi;
+
+    bool useTexture;
+    Image *texture;
 };
 
 #endif // MATERIAL_H

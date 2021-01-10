@@ -32,7 +32,7 @@ Vector3f PathTracing(const Ray &r, int depth, const SceneParser &sceneParser, mt
         return sceneParser.getBackgroundColor();
     }
     Vector3f x = r.getOrigin() + r.getDirection() * hit.getT();
-    Vector3f c = hit.getMaterial()->getColor();
+    Vector3f c = hit.getMaterial()->getColor(hit.texPos);
     Vector3f n = hit.getNormal().normalized();
 
     double p = max(max(c.x(), c.y()), c.z());

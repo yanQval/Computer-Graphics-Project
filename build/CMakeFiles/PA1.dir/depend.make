@@ -57,6 +57,7 @@ CMakeFiles/PA1.dir/src/mesh.cpp.o: ../deps/vecmath/include/Vector4f.h
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../deps/vecmath/include/vecmath.h
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/constant.h
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/hit.hpp
+CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/image.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/material.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/mesh.hpp
 CMakeFiles/PA1.dir/src/mesh.cpp.o: ../include/object3d.hpp
@@ -77,6 +78,7 @@ CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/camera.hpp
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/constant.h
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/group.hpp
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/hit.hpp
+CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/image.hpp
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/light.hpp
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/material.hpp
 CMakeFiles/PA1.dir/src/scene_parser.cpp.o: ../include/mesh.hpp

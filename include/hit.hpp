@@ -62,6 +62,8 @@ public:
         into = in;
     }
 
+    Vector2f texPos;
+
 private:
     double t;
     Material *material;

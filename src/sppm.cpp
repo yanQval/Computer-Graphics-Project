@@ -43,10 +43,11 @@ void rayTracing(const Ray &r, int depth, const SceneParser *sceneParser, vector<
         return;
     }
     Vector3f x = r.getOrigin() + r.getDirection() * hit.getT();
-    Vector3f c = hit.getMaterial()->getColor() * col;
+    Vector3f c = hit.getMaterial()->getColor(hit.texPos);
     Vector3f n = hit.getNormal().normalized();
 
-    double p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
+    double p = max(max(c.x(), c.y()), c.z());
+    c = c * col;
     //double p = max(max(c.x(), c.y()), c.z());
     //printf("%d %.5f\n", depth, p);
     if (++depth > 50)
@@ -110,12 +111,13 @@ void photonTracing(const Ray &r, int depth, const SceneParser *sceneParser, vect
         return;
     }
     Vector3f x = r.getOrigin() + r.getDirection() * hit.getT();
-    Vector3f c = col * hit.getMaterial()->getColor();
+    Vector3f c = hit.getMaterial()->getColor(hit.texPos);
     Vector3f n = hit.getNormal().normalized();
 
     //if(fabs(x[0] - 69) < 1 && fabs(x[1] - 0) < 1 && fabs(x[2] - 101) < 1)puts("!!!");
 
-    double p = max(max(hit.getMaterial()->getColor().x(), hit.getMaterial()->getColor().y()), hit.getMaterial()->getColor().z());
+    double p = max(max(c.x(), c.y()), c.z());
+    c = c * col;
     if (++depth > 20)
     {
         if (frand(mt_rand) < p && depth < 100)
@@ -194,10 +196,10 @@ HitPoint pixelData[2560][1440];
 Image SPPM::run()
 {
     int n_threads = 30;
-    int t_round = 200000;
+    int t_round = 500;
     int num_photons = 500000;
     num_photons = num_photons / n_threads * n_threads;
-    double alpha = .8;
+    double alpha = .7;
     double Rmax = .3;
 
     Camera *camera = sceneParser->getCamera();

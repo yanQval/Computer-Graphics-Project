@@ -5,6 +5,7 @@ PerspectiveCamera {
     angle 45
     width 1600
     height 1200
+    focusPoint False
 }
 
 Lights {

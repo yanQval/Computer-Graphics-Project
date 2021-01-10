@@ -30,7 +30,6 @@ SceneParser::SceneParser(const char *filename)
     materials = nullptr;
     current_material = nullptr;
 
-
     // parse the file
     assert(filename != nullptr);
     const char *ext = &filename[strlen(filename) - 4];
@@ -353,13 +352,17 @@ Material *SceneParser::parseMaterial()
         {
             emi = readVector3f();
         }
+        else if (!strcmp(token, "texture"))
+        {
+            getToken(filename);
+        }
         else
         {
             assert(!strcmp(token, "}"));
             break;
         }
     }
-    auto *answer = new Material(color, type, reflRate, emi);
+    auto *answer = new Material(color, filename, type, reflRate, emi);
     return answer;
 }
 
@@ -485,9 +488,20 @@ Plane *SceneParser::parsePlane()
     assert(!strcmp(token, "offset"));
     double offset = readFloat();
     getToken(token);
+    bool useTexture = false;
+    Vector3f x = Vector3f::ZERO, y = Vector3f::ZERO;
+    assert(!strcmp(token, "useTexture"));
+    getToken(token);
+    if (!strcmp(token, "True"))
+    {
+        useTexture = true;
+        x = readVector3f();
+        y = readVector3f();
+    }
+    getToken(token);
     assert(!strcmp(token, "}"));
     assert(current_material != nullptr);
-    return new Plane(normal, offset, current_material);
+    return new Plane(normal, offset, current_material, useTexture, x, y);
 }
 
 Triangle *SceneParser::parseTriangle()

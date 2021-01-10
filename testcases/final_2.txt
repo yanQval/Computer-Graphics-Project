@@ -1,0 +1,136 @@
+PerspectiveCamera {
+    center 40 15 60
+    direction -0.05 -0.25 -1
+    up 0 1 0
+    angle 45
+    width 2560
+    height 1440
+    focusPoint False
+}
+
+Lights {
+    numLights 1
+    CircleLight {
+        position 320 180 0
+        radius 70
+        normal -1 -0.6 0
+        color 8000 7500 5600
+    }
+}
+
+Materials {
+    numMaterials 7
+    Material {
+        color 1 0.4 0.7
+    }
+    Material {
+        color 0.2 0.2 1
+    }
+    Material {
+        color 0.4 0.4 0.99 
+        type REFL
+        reflectRate 1.5
+    }
+    Material { 
+        color 0.999 0.999 0.999 
+        type SPEC
+    }
+    Material {
+        color 0.999 0.999 0.999 
+        type REFL
+        reflectRate 1.5
+    }
+    Material {
+        color 0.9 0.9 0.9
+    }
+    Material {
+        color 0.9 0.9 0.9
+        texture texture/woodfloor.ppm
+    }
+
+}
+
+Group {
+    numObjects 12
+
+    MaterialIndex 6
+    Plane {
+        normal 0 1 0
+        offset 0
+        useTexture True .012 0 0 0 0 0.006
+    }
+
+    MaterialIndex 1
+    Plane {
+        normal 1 0 0
+        offset 0
+        useTexture False
+    }
+    Plane {
+        normal 0 0 1
+        offset -20
+        useTexture False
+    }
+    
+    MaterialIndex 2
+    Transform {
+        XRotate  90 
+		UniformScale  4.2
+		Translate  67 -6.5 20
+        TriangleMesh {
+            obj_file mesh/glass1.obj
+        }
+    }
+
+
+    MaterialIndex 4
+    Transform {
+		UniformScale  4
+		Translate  46 13.3 10
+        TriangleMesh {
+            obj_file mesh/dragon.obj
+        }
+    }
+
+
+    MaterialIndex 5
+    Transform {
+		UniformScale  0.1
+		Translate   45 0 10
+        TriangleMesh {
+            obj_file mesh/chair.obj
+        }
+    }
+
+
+
+    MaterialIndex 4
+    Sphere {
+        center 32.5 3 30.7 	
+        radius 3
+    }
+    Sphere {
+        center 26 3 29 	
+        radius 3
+    }
+    Sphere {
+        center 29.5 3 35 	
+        radius 3
+    }
+    Sphere {
+        center 28.9 7.5 31.8	
+        radius 3
+    }
+
+    MaterialIndex 3
+    Sphere {
+        center 77 7.6 -12.4
+        radius 7
+    }
+
+    MaterialIndex 0
+    Sphere {
+        center 7.6 7.6 -12.4
+        radius 7
+    }
+}

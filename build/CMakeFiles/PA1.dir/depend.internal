@@ -58,6 +58,7 @@ CMakeFiles/PA1.dir/src/mesh.cpp.o
  ../deps/vecmath/include/vecmath.h
  ../include/constant.h
  ../include/hit.hpp
+ ../include/image.hpp
  ../include/material.hpp
  ../include/mesh.hpp
  ../include/object3d.hpp
@@ -78,6 +79,7 @@ CMakeFiles/PA1.dir/src/scene_parser.cpp.o
  ../include/constant.h
  ../include/group.hpp
  ../include/hit.hpp
+ ../include/image.hpp
  ../include/light.hpp
  ../include/material.hpp
  ../include/mesh.hpp

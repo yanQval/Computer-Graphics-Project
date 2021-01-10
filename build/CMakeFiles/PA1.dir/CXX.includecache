@@ -117,6 +117,8 @@ ray.hpp
 ../include/ray.hpp
 hit.hpp
 ../include/hit.hpp
+image.hpp
+../include/image.hpp
 iostream
 -
 

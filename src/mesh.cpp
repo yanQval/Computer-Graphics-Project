@@ -180,14 +180,16 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material)
             {
                 std::replace(line.begin(), line.end(), bslash, space);
                 std::stringstream facess(line);
-                TriangleIndex trig;
+                TriangleIndex trig, nor;
                 facess >> tok;
                 for (int ii = 0; ii < 3; ii++)
                 {
-                    facess >> trig[ii] >> texID;
+                    facess >> trig[ii] >> texID >> nor[ii];
+                    nor[ii]--;
                     trig[ii]--;
                 }
                 t.push_back(trig);
+                tn.push_back(nor);
             }
             else
             {
